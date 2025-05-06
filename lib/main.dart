@@ -1,79 +1,78 @@
 import 'package:flutter/material.dart';
+import 'welcome_screen.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
+import 'home_screen.dart';
+//import 'nature_wildlife_page.dart';
+import 'FoodCategoryScreen.dart';
+//import 'travelnote.dart';// Import FoodCategoryScreen
+//import 'Emergency.dart';
+//import 'my_profile.dart';
+//import 'setting.dart';
+
 
 void main() {
-  runApp(WanderLanka()); // Changed to match the class name
+  runApp(MyApp());
 }
 
-class WanderLanka extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Wander Lanka',
+      debugShowCheckedModeBanner: false,
+      title: 'Travel App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => WelcomeScreen(),
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterScreen(),
+        //'/nature': (context) => NatureWildlifePage(),
+        '/home': (context) => HomeScreen(),
+        '/food': (context) => FoodCategoryScreen(),
+       //'/travelnote': (context) => TravelNoteScreen(),
+        //'/profile': (context) => MyProfilePage(),
+        //'/emergency': (context) => EmergencyScreen(),
+        //'/setting': (context) => SettingsPage(),
+
+// Ensure this route is here
+      },
+    );
+  }
+}
+/*
+import 'package:flutter/material.dart';
+import 'screens/landing_page.dart';
+import 'screens/category_page.dart';
+import 'screens/places_page.dart';
+import 'screens/place_detail_page.dart';
+
+
+void main() {
+  runApp(ExploreSLApp());
+}
+
+class ExploreSLApp extends StatelessWidget {
+  const ExploreSLApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Explore SL',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LandingPage(),
+        '/category': (context) => CategoryPage(),
+        '/places': (context) => PlacesPage(),
+        '/placeDetail': (context) => PlaceDetailPage(),
+
+      },
     );
   }
 }
 
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/background.jpg', // Ensure the image is in the assets folder
-              fit: BoxFit.cover,
-            ),
-          ),
-          // Login/Register Box
-          Center(
-            child: Container(
-              width: 300,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(
-                  0.8,
-                ), // Transparent white background
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Welcome to Wander Lanka',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 20),
-                  // Register Button
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigate to Register screen (implement this later)
-                    },
-                    child: Text('Register'),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  // Login Button
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigate to Login screen (implement this later)
-                    },
-                    child: Text('Login'),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+ */
