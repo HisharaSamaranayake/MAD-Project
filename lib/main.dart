@@ -6,9 +6,9 @@ import 'home_screen.dart';
 //import 'nature_wildlife_page.dart';
 import 'FoodCategoryScreen.dart';
 //import 'travelnote.dart';// Import FoodCategoryScreen
-//import 'Emergency.dart';
-//import 'my_profile.dart';
-//import 'setting.dart';
+import 'Emergency.dart';
+import 'my_profile.dart';
+import 'setting.dart';
 
 
 void main() {
@@ -31,9 +31,9 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/food': (context) => FoodCategoryScreen(),
        //'/travelnote': (context) => TravelNoteScreen(),
-        //'/profile': (context) => MyProfilePage(),
-        //'/emergency': (context) => EmergencyScreen(),
-        //'/setting': (context) => SettingsPage(),
+        '/profile': (context) => MyProfilePage(),
+        '/emergency': (context) => EmergencyScreen(),
+        '/setting': (context) => SettingsPage(),
 
 // Ensure this route is here
       },
