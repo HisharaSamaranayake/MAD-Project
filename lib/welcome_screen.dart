@@ -1,50 +1,95 @@
- import 'dart:ui'; // For ImageFilter.blur
 import 'package:flutter/material.dart';
+import 'home_screen.dart'; // Make sure this file exists
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeInAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Animation controller for the welcome message
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+
+    _controller.forward();
+
+    // Navigate to home screen after a delay
+    Future.delayed(const Duration(seconds: 4), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Apply BackdropFilter for blurring the background image
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 200.0, sigmaY: 100.0), // Adjust blur strength
-            child: Opacity(
-              opacity: 0.7, // Adjust opacity for the image
-              child: Image.asset(
-                "assets/bg3.jpg",
-                fit: BoxFit.cover,
-                width: double.infinity, // Makes sure the image covers the full width
-                height: double.infinity, // Makes sure the image covers the full height
+          // Background image
+          Image.asset(
+            'assets/welcomes.png', // Replace with your actual image
+            fit: BoxFit.cover,
+          ),
+          // Welcome message overlay
+          Center(
+            child: FadeTransition(
+              opacity: _fadeInAnimation,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    'WELCOME',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(221, 0, 2, 1),
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'to',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    'Sri Lanka',
+                    style: TextStyle(
+                      fontSize: 42,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/logo.png", height: 300),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/register'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 60), // width, height
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding to adjust button size
-                ),
-                child: Text("Register"),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/login'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 60), // width, height
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding to adjust button size
-                ),
-                child: Text("Log In"),
-              ),
-            ],
           ),
         ],
       ),

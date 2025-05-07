@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TraditionalFoodsScreen extends StatelessWidget {
-  final List<Map<String, String>> traditionalFoods = [
+  final List<Map<String, String>> traditionalFoods = const[
     {'name': 'Milk Rice', 'image': 'assets/kiribath.jpeg'},
     {'name': 'String Hoppers', 'image': 'assets/string_hoppers.jpeg'},
     {'name': 'Hoppers', 'image': 'assets/hoppers.jpg'},
@@ -9,6 +9,8 @@ class TraditionalFoodsScreen extends StatelessWidget {
     {'name': 'Pittu', 'image': 'assets/pittu.jpg'},
     {'name': 'Lamprais', 'image': 'assets/lamprais.jpg'},
   ];
+
+  const TraditionalFoodsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class TraditionalFoodsScreen extends StatelessWidget {
 class TraditionalFoodDetailScreen extends StatelessWidget {
   final Map<String, String> food;
 
-  TraditionalFoodDetailScreen({required this.food});
+  TraditionalFoodDetailScreen({super.key, required this.food});
 
   final Map<String, String> foodDescriptions = {
     'Milk Rice': '''
@@ -198,7 +200,7 @@ Rich in flavor and history.
 class TraditionalFoodMapScreen extends StatelessWidget {
   final String foodName;
 
-  TraditionalFoodMapScreen({required this.foodName});
+  const TraditionalFoodMapScreen({super.key, required this.foodName});
 
   @override
   Widget build(BuildContext context) {

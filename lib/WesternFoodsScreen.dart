@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class WesternFoodsScreen extends StatelessWidget {
-  final List<Map<String, String>> westernFoods = [
+  final List<Map<String, String>> westernFoods = const[
     {'name': 'Pizza', 'image': 'assets/pizza.jpg'},
     {'name': 'Burger', 'image': 'assets/burger.jpeg'},
     {'name': 'Pasta', 'image': 'assets/pasta.jpg'},
     {'name': 'Fries', 'image': 'assets/fries.jpg'},
   ];
+
+  const WesternFoodsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class WesternFoodsScreen extends StatelessWidget {
 class WesternFoodDetailScreen extends StatelessWidget {
   final Map<String, String> food;
 
-  WesternFoodDetailScreen({required this.food});
+  WesternFoodDetailScreen({super.key, required this.food});
 
   final Map<String, String> foodDescriptions = {
     'Pizza': '''
@@ -179,7 +181,7 @@ Fries are deep-fried strips of potatoes, crispy outside and soft inside.
 class WesternFoodMapScreen extends StatelessWidget {
   final String foodName;
 
-  WesternFoodMapScreen({required this.foodName});
+  const WesternFoodMapScreen({super.key, required this.foodName});
 
   @override
   Widget build(BuildContext context) {

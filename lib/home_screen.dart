@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'nature_wildlife_page.dart'; // Import the Nature & Wildlife page
-import 'FoodCategoryScreen.dart'; // Import the FoodCategoryScreen
+// Import the FoodCategoryScreen
 //import 'notification_page.dart'; // Import the NotificationPage
 
 class HomeScreen extends StatelessWidget {
@@ -11,6 +11,8 @@ class HomeScreen extends StatelessWidget {
     {'title': 'HILL COUNTRY & SCENIC', 'image': 'assets/hillcountry.jpg'},
     {'title': 'FOOD', 'image': 'assets/foods.png', 'route': '/food'},
   ];
+
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
