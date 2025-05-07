@@ -7,7 +7,7 @@ import 'WesternFoodsScreen.dart';
 import 'traditional_foods.dart'; // Import the separate file for each category
 
 class FoodCategoryScreen extends StatelessWidget {
-  final List<Map<String, String>> foodCategories = [
+  final List<Map<String, String>> foodCategories = const[
     {'title': 'Traditional', 'image': 'assets/traditional.jpg'},
     {'title': 'Western', 'image': 'assets/western.jpg'},
     {'title': 'Tea & Coffee', 'image': 'assets/tea_coffee.jpg'},
@@ -15,6 +15,8 @@ class FoodCategoryScreen extends StatelessWidget {
     {'title': 'Street Foods', 'image': 'assets/street_food.jpg'},
     {'title': 'Tropical Fruits', 'image': 'assets/tropical_fruits.jpg'},
   ];
+
+  const FoodCategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

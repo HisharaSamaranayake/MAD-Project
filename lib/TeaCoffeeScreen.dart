@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class TeaCoffeeScreen extends StatelessWidget {
-  final List<Map<String, String>> teaCoffeeItems = [
+  final List<Map<String, String>> teaCoffeeItems = const[
     {'name': 'Ceylon Tea', 'image': 'assets/ceylon_tea.jpg'},
     {'name': 'Coffee', 'image': 'assets/coffee.jpg'},
     {'name': 'Herbal Tea', 'image': 'assets/herbal_tea.jpg'},
     {'name': 'Iced Tea', 'image': 'assets/iced_tea.png'},
   ];
+
+  const TeaCoffeeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class TeaCoffeeScreen extends StatelessWidget {
 class TeaCoffeeDetailScreen extends StatelessWidget {
   final Map<String, String> teaCoffee;
 
-  TeaCoffeeDetailScreen({required this.teaCoffee});
+  TeaCoffeeDetailScreen({super.key, required this.teaCoffee});
 
   final Map<String, String> teaCoffeeDescriptions = {
     'Ceylon Tea':
@@ -146,7 +148,7 @@ class TeaCoffeeDetailScreen extends StatelessWidget {
 class TeaCoffeeMapScreen extends StatelessWidget {
   final String drinkName;
 
-  TeaCoffeeMapScreen({required this.drinkName});
+  const TeaCoffeeMapScreen({super.key, required this.drinkName});
 
   @override
   Widget build(BuildContext context) {
