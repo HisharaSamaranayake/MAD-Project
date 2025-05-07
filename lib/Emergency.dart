@@ -8,31 +8,64 @@ class EmergencyScreen extends StatelessWidget {
     required List<Map<String, String>> services,
   }) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 6,
+      color: Colors.blue[50], // Using a light blue shade
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-            child: Image.asset(assetPath),
-          ),
-          ...services.map((service) => ListTile(
-            leading: const Icon(Icons.call),
-            title: Text(service['title']!),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                service['number']!,
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
-              ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: Image.asset(
+              assetPath,
+              fit: BoxFit.cover,
+              height: 180,
+              width: double.infinity,
             ),
-          )),
+          ),
+          const SizedBox(height: 8),
+          ...services.map(
+                (service) {
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                color: Colors.blue[100], // Slightly darker blue shade
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: ListTile(
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  leading: const Icon(Icons.local_phone, color: Colors.redAccent, size: 28),
+                  title: Text(
+                    service['title']!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 17,
+                      color: Colors.black,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  trailing: Container(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.red[700],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      service['number']!,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ).toList(),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -41,17 +74,23 @@ class EmergencyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: const Color(0xFFD5EBFF), // Light background for the whole screen
       appBar: AppBar(
-        backgroundColor: Colors.blue[100],
+        backgroundColor: const Color(0xFFD5EBFF),
         centerTitle: true,
         elevation: 0,
-        title: const Text("Emergency"),
+        title: const Text(
+          "Emergency",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 22,
+            letterSpacing: 0.8,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // Go back to previous screen
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         actions: const [
           Padding(
@@ -60,7 +99,6 @@ class EmergencyScreen extends StatelessWidget {
           ),
         ],
       ),
-      // Removed drawer here
       body: ListView(
         children: [
           buildEmergencyCard(
@@ -79,16 +117,22 @@ class EmergencyScreen extends StatelessWidget {
           buildEmergencyCard(
             assetPath: 'assets/1912.png',
             services: [
-              {'title': 'Sri Lanka Tourism Development Authority', 'number': '1912'},
+              {
+                'title': 'Sri Lanka Tourism Development Authority',
+                'number': '1912'
+              },
             ],
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
         onTap: (index) {
           if (index == 0) {
-            // Placeholder: favorites
+            Navigator.pushNamed(context, '/favorites');
           } else if (index == 1) {
             Navigator.pushNamed(context, '/home');
           }
