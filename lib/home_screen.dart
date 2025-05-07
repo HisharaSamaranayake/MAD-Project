@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatelessWidget {
   final List<Map<String, String>> categories = [
     {'title': 'NATURE & WILD LIFE', 'image': 'assets/nature.png', 'route': '/nature'},
-    {'title': 'CULTURAL & HISTORICAL', 'image': 'assets/culture.png'},
-    {'title': 'COASTAL & BEACHES', 'image': 'assets/beaches.png'},
-    {'title': 'HILL COUNTRY & SCENIC', 'image': 'assets/hillcountry.jpg'},
-    {'title': 'FOOD', 'image': 'assets/foods.png', 'route': '/food'},
+    {'title': 'CULTURAL & HISTORICAL', 'image': 'assets/culture.png', 'route': '/culture'},
+    {'title': 'COASTAL & BEACHES', 'image': 'assets/beaches.png','route': '/beach'},
+    {'title': 'HILL COUNTRY & SCENIC', 'image': 'assets/hillcountry.jpg','route': '/hillcountry'},
+
   ];
 
   HomeScreen({super.key});
