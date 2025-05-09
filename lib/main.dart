@@ -9,7 +9,9 @@ import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
 import 'cultural_historical_page.dart';
-import 'hillcountry_scenic_page.dart'; import 'coste_beaches_page.dart';import 'nature_wildlife_page.dart';
+import 'hillcountry_scenic_page.dart';
+import 'coste_beaches_page.dart';
+import 'nature_wildlife_page.dart';
 
 
 void main() {
