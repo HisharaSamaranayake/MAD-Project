@@ -40,11 +40,13 @@ class HomeScreen extends StatelessWidget {
         leading: Builder(
           builder: (BuildContext context) => IconButton(
             icon: Icon(Icons.menu, color: Colors.black),
+            iconSize: 36, // <-- Make the icon larger here (default is 24)
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
           ),
         ),
+
       ),
       drawer: Drawer(
         child: ListView(
@@ -195,12 +197,27 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+        currentIndex: 0, // Set to 0 if this is the home screen
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushNamed(context, '/emergency');
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/profile');
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Emergrncy'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
+
     );
   }
 }
