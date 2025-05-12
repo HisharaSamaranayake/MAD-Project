@@ -41,7 +41,7 @@ class MyProfilePage extends StatelessWidget {
                 ),
                 Positioned(
                   child: CircleAvatar(
-                    radius: 16,
+                    radius: 18,
                     backgroundColor: Colors.white,
                     child: const Icon(Icons.camera_alt, size: 18),
                   ),
@@ -137,7 +137,7 @@ class ProfileTextField extends StatelessWidget {
       children: [
         Text(label,
             style: const TextStyle(
-                fontWeight: FontWeight.w600, color: Colors.white)),
+                fontWeight: FontWeight.w600, color: Colors.black)),
         const SizedBox(height: 6),
         TextFormField(
           initialValue: value,
