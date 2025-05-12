@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'nature_wildlife_page.dart'; // Import the Nature & Wildlife page
-// Import the FoodCategoryScreen
+import 'nature_wildlife_page.dart'; // Import the Nature & Wildlife page
+import 'FoodCategoryScreen.dart'; // Import the FoodCategoryScreen
+import 'cultural_historical_page.dart'; // Import the Cultural & Historical page
 //import 'notification_page.dart'; // Import the NotificationPage
+import 'coste_beaches_page.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<Map<String, String>> categories = [
@@ -11,8 +13,6 @@ class HomeScreen extends StatelessWidget {
     {'title': 'HILL COUNTRY & SCENIC', 'image': 'assets/hillcountry.jpg','route': '/hillcountry'},
 
   ];
-
-  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +26,17 @@ class HomeScreen extends StatelessWidget {
             Image.asset('assets/logo.png', height: 70),
           ],
         ),
-        actions: [
+        /*actions: [
           IconButton(
             icon: Icon(Icons.notifications, color: Colors.black),
             onPressed: () {
-              // Navigate to the Notification Page when the icon is pressed
-              /*Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => NotificationPage()),
-              );*/
+              );
             },
           ),
-        ],
+        ],*/
         leading: Builder(
           builder: (BuildContext context) => IconButton(
             icon: Icon(Icons.menu, color: Colors.black),
@@ -73,6 +72,7 @@ class HomeScreen extends StatelessWidget {
               title: Text('Seasonal Experience'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushNamed(context, '/season');
               },
             ),
             ListTile(
@@ -88,39 +88,38 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/travelnote');
-
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_sharp),
               title: Text('Foods'),
               onTap: () {
-                Navigator.pop(context); // Close the drawer first
-                Navigator.pushNamed(context, '/food'); // Navigate to FoodCategoryScreen
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/food');
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_sharp),
               title: Text('Emergency Contacts'),
               onTap: () {
-                Navigator.pop(context); // Close the drawer first
-                Navigator.pushNamed(context, '/emergency'); // Navigate to FoodCategoryScreen
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/emergency');
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_sharp),
               title: Text('Profile'),
               onTap: () {
-                Navigator.pop(context); // Close the drawer first
-                Navigator.pushNamed(context, '/profile'); // Navigate to FoodCategoryScreen
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/profile');
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_sharp),
               title: Text('Settings'),
               onTap: () {
-                Navigator.pop(context); // Close the drawer first
-                Navigator.pushNamed(context, '/setting'); // Navigate to FoodCategoryScreen
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/setting');
               },
             ),
           ],
@@ -154,10 +153,10 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        if (categories[index]['route'] == '/nature') {
-                          Navigator.pushNamed(context, '/nature');
+                        final route = categories[index]['route'];
+                        if (route != null) {
+                          Navigator.pushNamed(context, route);
                         }
-                        // Add other category routes as needed
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(
