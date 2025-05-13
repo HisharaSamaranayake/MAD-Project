@@ -181,10 +181,10 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/emergency');
               break;
             case 1:
-              Navigator.pushNamed(context, '/emergency');
+              Navigator.pushNamed(context, '/home');
               break;
             case 2:
               Navigator.pushNamed(context, '/profile');
@@ -192,8 +192,8 @@ class HomeScreen extends StatelessWidget {
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Emergency'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
