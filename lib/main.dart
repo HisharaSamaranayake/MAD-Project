@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'coste_beaches_page.dart';
+import 'cultural_historical_page.dart';
+import 'hillcountry_scenic_page.dart';
 import 'welcome_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
@@ -8,9 +11,7 @@ import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
-import 'cultural_historical_page.dart';
-import 'hillcountry_scenic_page.dart';
-import 'coste_beaches_page.dart';
+
 import 'nature_wildlife_page.dart';
 
 
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/beach': (context) => CoastalBeachesPage(),
         '/culture': (context) => CulturalHistoricalPage(),
         '/hillcountry': (context) => HillCountryScenicPage(),
+
 
 // Ensure this route is here
       },
