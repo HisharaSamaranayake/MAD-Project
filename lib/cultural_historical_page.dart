@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-//import 'travelnote.dart';
 
 class CulturalHistoricalPage extends StatelessWidget {
-  final List<Map<String, String>> places = [
+  final List<Map<String, String>> places = const [
     {
       'title': 'Sigiriya Rock Fortress',
       'image': 'assets/sigiriya.jpg',
@@ -35,11 +34,10 @@ class CulturalHistoricalPage extends StatelessWidget {
     },
   ];
 
-  const CulturalHistoricalPage({super.key});
+  const CulturalHistoricalPage({super.key}); // ✅ Constructor marked const
 
   Future<Map<String, dynamic>> fetchWeather(String location) async {
-    final apiKey =
-        '9f2f8683ec9121922d9117236593e66a'; // Your OpenWeatherMap API key
+    final apiKey = '9f2f8683ec9121922d9117236593e66a';
     final url = Uri.parse(
       'https://api.openweathermap.org/data/2.5/weather?lat=${location.split(",")[0]}&lon=${location.split(",")[1]}&appid=$apiKey&units=metric',
     );
@@ -61,19 +59,19 @@ class CulturalHistoricalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cultural & Historical Places'),
+        title: const Text('Cultural & Historical Places'),
         backgroundColor: Colors.orange.shade50,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: ListView.builder(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         itemCount: places.length,
         itemBuilder: (context, index) {
           return Card(
-            margin: EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -86,15 +84,16 @@ class CulturalHistoricalPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder:
-                          (context) => PlaceDetailPage(
-                            place: places[index],
-                            weather: weather,
-                          ),
+                      builder: (context) => PlaceDetailPage(
+                        place: places[index],
+                        weather: weather,
+                      ),
                     ),
                   );
                 } catch (e) {
-                  print('Error fetching weather: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error fetching weather: $e')),
+                  );
                 }
               },
               child: Column(
@@ -106,10 +105,10 @@ class CulturalHistoricalPage extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       places[index]['title']!,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -141,7 +140,7 @@ class PlaceDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(place['title']!),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -154,33 +153,35 @@ class PlaceDetailPage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   place['title']!,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Weather: ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind: ${weather['wind']['speed']} km/h',
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
-                SizedBox(height: 16),
-                Text(place['description']!, style: TextStyle(fontSize: 16)),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
+                Text(place['description']!,
+                    style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder:
-                            (context) => PlaceMapPage(place: place['title']!),
+                        builder: (context) =>
+                            PlaceMapPage(place: place['title']!),
                       ),
                     );
                   },
-                  child: Text('Open On Map'),
+                  child: const Text('Open On Map'),
                 ),
               ],
             ),
@@ -201,13 +202,15 @@ class PlaceMapPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(place),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Center(
-        child: Text('Map of $place', style: TextStyle(fontSize: 18)),
+        child: Text('Map of $place', style: const TextStyle(fontSize: 18)),
       ),
     );
   }
 }
+
+

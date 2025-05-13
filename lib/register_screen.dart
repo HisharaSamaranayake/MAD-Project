@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'welcome_screen.dart'; // Make sure this screen exists
-// import 'login_screen.dart'; // Uncomment if you want to use pushReplacement to LoginScreen
+import 'login_screen.dart'; // Ensure the login screen is imported
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,6 +15,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  // Flag to show success message
+  bool _isRegistrationSuccessful = false;
 
   void _register() {
     if (_emailController.text.isEmpty ||
@@ -30,11 +33,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // Navigate to WelcomeScreen after successful registration
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-    );
+    // Set registration success
+    setState(() {
+      _isRegistrationSuccessful = true;
+    });
+
+    // Show a registration successful message to the user
+    _showSuccessDialog();
   }
 
   void _showErrorDialog(String message) {
@@ -47,6 +52,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Show success message after successful registration
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Registration Successful'),
+          content: const Text('You have successfully registered. Redirecting to login...'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the dialog and navigate to Login screen
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()), // Navigate to LoginScreen
+                );
+              },
               child: const Text('OK'),
             ),
           ],
@@ -94,13 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.pop(context); // ✅ Basic back navigation
-
-                        // OPTIONAL: If you want to always go to LoginScreen instead of popping:
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        // );
+                        Navigator.pop(context); // Basic back navigation
                       },
                     ),
                   ),
@@ -246,3 +271,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+
+

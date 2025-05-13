@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-//import 'travelnote.dart';
 
 class NatureWildlifePage extends StatelessWidget {
-  final List<Map<String, String>> parks = [
+  const NatureWildlifePage({super.key});
+
+  // Updated the parks list to be constant
+  static const List<Map<String, String>> parks = [
     {
       'title': 'Yala National Park',
       'image': 'assets/Yala.jpg',
@@ -34,8 +36,6 @@ class NatureWildlifePage extends StatelessWidget {
       'location': '8.4582,80.0518', // Latitude and Longitude for Wilpattu
     },
   ];
-
-  const NatureWildlifePage({super.key});
 
   Future<Map<String, dynamic>> fetchWeather(String location) async {
     final apiKey =
@@ -134,8 +134,6 @@ class ParkDetailPage extends StatelessWidget {
   final Map<String, dynamic> weather;
 
   const ParkDetailPage({super.key, required this.park, required this.weather});
-
-  // This method simulates adding a place to the travel note
 
   @override
   Widget build(BuildContext context) {
@@ -249,3 +247,5 @@ class ParkMapPage extends StatelessWidget {
     );
   }
 }
+
+
