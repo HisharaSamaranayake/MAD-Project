@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Ensure the login screen is imported
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,30 +16,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  // Flag to show success message
-  bool _isRegistrationSuccessful = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _register() {
-    if (_emailController.text.isEmpty ||
-        _phoneController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _confirmPasswordController.text.isEmpty) {
+  String _errorMessage = '';
+
+  Future<void> _register() async {
+    String email = _emailController.text.trim();
+    String phone = _phoneController.text.trim();
+    String password = _passwordController.text.trim();
+    String confirmPassword = _confirmPasswordController.text.trim();
+
+    print("Starting registration with email: $email");
+
+    if (email.isEmpty || phone.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       _showErrorDialog('All fields are required');
       return;
     }
 
-    if (_passwordController.text != _confirmPasswordController.text) {
+    if (password != confirmPassword) {
       _showErrorDialog('Passwords do not match');
       return;
     }
 
-    // Set registration success
-    setState(() {
-      _isRegistrationSuccessful = true;
-    });
+    try {
+      print("Attempting Firebase registration...");
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print("User registered: ${userCredential.user?.uid}");
 
-    // Show a registration successful message to the user
-    _showSuccessDialog();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      print("FirebaseAuthException: ${e.code} - ${e.message}");
+      setState(() {
+        _errorMessage = e.message ?? 'Registration failed. Please try again.';
+      });
+      _showErrorDialog(_errorMessage);
+    } catch (e) {
+      print("Unexpected error: $e");
+      _showErrorDialog("An unexpected error occurred.");
+    }
   }
 
   void _showErrorDialog(String message) {
@@ -60,35 +80,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Show success message after successful registration
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Registration Successful'),
-          content: const Text('You have successfully registered. Redirecting to login...'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Close the dialog and navigate to Login screen
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()), // Navigate to LoginScreen
-                );
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _loginWith(String provider) {
     print('Login with $provider');
-    // Add logic for social login
+    // Add social login integration here
   }
 
   Widget _socialCircle(IconData icon, Color iconColor, Color bgColor, String provider) {
@@ -125,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.pop(context); // Basic back navigation
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -140,6 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   // Email Field
                   TextField(
                     controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       hintText: 'Username or Email',
                       filled: true,
@@ -220,7 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Create Account Button
+                  // Register Button
                   ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
@@ -241,7 +236,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const Text('or'),
                   const SizedBox(height: 10),
 
-                  // Social Login
                   Row(
                     children: [
                       const Expanded(child: Divider(thickness: 1)),
@@ -271,5 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+
+
 
 

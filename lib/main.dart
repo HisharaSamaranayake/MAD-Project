@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
 import 'coastal_beaches.dart';
 import 'cultural_historical_page.dart';
 import 'hillcountry_scenic_page.dart';
@@ -11,10 +12,11 @@ import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
-// Add the NatureWildlifePage import here
 import 'nature_wildlife_page.dart'; 
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure proper initialization before Firebase setup
+  await Firebase.initializeApp(); // Initialize Firebase
   runApp(const MyApp());
 }
 
@@ -55,7 +57,6 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const CulturalHistoricalPage());
           case '/hillcountry':
             return MaterialPageRoute(builder: (_) => const HillCountryScenicPage());
-          // Add the case for 'nature' route
           case '/nature':
             return MaterialPageRoute(builder: (_) => const NatureWildlifePage());
           default:

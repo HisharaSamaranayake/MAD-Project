@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'welcome_screen.dart'; // Ensure this file exists
 
 class LoginScreen extends StatefulWidget {
@@ -13,16 +14,38 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _login() {
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth instance
+
+  String _errorMessage = ''; // To show any error message
+
+  // Function to handle login
+  Future<void> _login() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
     if (email.isNotEmpty && password.isNotEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-      );
+      try {
+        // Firebase login
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        // On successful login, navigate to WelcomeScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+        );
+      } on FirebaseAuthException catch (e) {
+        // If there's an error, show a SnackBar
+        setState(() {
+          _errorMessage = e.message ?? 'Login failed. Please try again.';
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage)),
+        );
+      }
     } else {
+      // If fields are empty, show a SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please enter email and password")),
       );
@@ -31,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _loginWith(String provider) {
     print('Login with $provider');
+    // You can implement social login logic here later (Google, Facebook, etc.)
   }
 
   Widget _socialCircle(IconData icon, Color iconColor, Color bgColor, String provider) {
@@ -129,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Login Button
                   ElevatedButton(
-                    onPressed: _login,
+                    onPressed: _login, // Call the login function here
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal.shade100,
                       minimumSize: const Size(double.infinity, 50),
@@ -180,3 +204,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+

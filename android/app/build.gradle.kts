@@ -1,3 +1,8 @@
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.4.0") // ✅ Add this line
+    }
+}
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,7 +13,7 @@ plugins {
 android {
     namespace = "com.example.wander_lanka"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -42,3 +47,5 @@ android {
 flutter {
     source = "../.."
 }
+apply(plugin = "com.google.gms.google-services")
+
