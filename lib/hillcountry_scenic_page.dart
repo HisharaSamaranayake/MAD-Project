@@ -8,28 +8,34 @@ class HillCountryScenicPage extends StatelessWidget {
     {
       'title': 'Nuwara Eliya',
       'image': 'assets/nuwaraeliya.jpg',
-      'description': 'Known as "Little England," Nuwara Eliya is a cool, misty town surrounded by tea plantations, colonial architecture, and beautiful gardens.',
-      'location': '6.9708,80.7829'
+      'description':
+          'Known as "Little England," Nuwara Eliya is a cool, misty town surrounded by tea plantations, colonial architecture, and beautiful gardens.',
+      'location': '6.9708,80.7829',
     },
     {
       'title': 'Ella',
       'image': 'assets/ella.jpg',
-      'description': 'Ella is a small town in the hill country with stunning views, lush greenery, and attractions like the Nine Arches Bridge and Ella Rock.',
-      'location': '6.8731,81.0462'
+      'description':
+          'Ella is a small town in the hill country with stunning views, lush greenery, and attractions like the Nine Arches Bridge and Ella Rock.',
+      'location': '6.8731,81.0462',
     },
     {
       'title': 'Horton Plains',
       'image': 'assets/horton.jpg',
-      'description': 'A national park in the central highlands, Horton Plains is known for World’s End, Baker’s Falls, and diverse flora and fauna.',
-      'location': '6.8098,80.7998'
+      'description':
+          'A national park in the central highlands, Horton Plains is known for World’s End, Baker’s Falls, and diverse flora and fauna.',
+      'location': '6.8098,80.7998',
     },
     {
       'title': 'Adam’s Peak',
       'image': 'assets/adamspeak.jpg',
-      'description': 'A sacred mountain peak with a footprint-shaped rock formation at the summit, revered by Buddhists, Hindus, and Muslims.',
-      'location': '6.8096,80.4999'
+      'description':
+          'A sacred mountain peak with a footprint-shaped rock formation at the summit, revered by Buddhists, Hindus, and Muslims.',
+      'location': '6.8096,80.4999',
     },
   ];
+
+  const HillCountryScenicPage({super.key});
 
   Future<Map<String, dynamic>> fetchWeather(String location) async {
     final apiKey = '9f2f8683ec9121922d9117236593e66a';
@@ -41,7 +47,9 @@ class HillCountryScenicPage extends StatelessWidget {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Failed to load weather data. Status code: ${response.statusCode}');
+        throw Exception(
+          'Failed to load weather data. Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       throw Exception('Failed to load weather data: $e');
@@ -65,15 +73,23 @@ class HillCountryScenicPage extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
             margin: EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: InkWell(
               onTap: () async {
                 try {
-                  final weather = await fetchWeather(places[index]['location']!);
+                  final weather = await fetchWeather(
+                    places[index]['location']!,
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PlaceDetailPage(place: places[index], weather: weather),
+                      builder:
+                          (context) => PlaceDetailPage(
+                            place: places[index],
+                            weather: weather,
+                          ),
                     ),
                   );
                 } catch (e) {
@@ -82,10 +98,21 @@ class HillCountryScenicPage extends StatelessWidget {
               },
               child: Column(
                 children: [
-                  Image.asset(places[index]['image']!, height: 150, width: double.infinity, fit: BoxFit.cover),
+                  Image.asset(
+                    places[index]['image']!,
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                   Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text(places[index]['title']!, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      places[index]['title']!,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -101,7 +128,11 @@ class PlaceDetailPage extends StatelessWidget {
   final Map<String, String> place;
   final Map<String, dynamic> weather;
 
-  PlaceDetailPage({required this.place, required this.weather});
+  const PlaceDetailPage({
+    super.key,
+    required this.place,
+    required this.weather,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -115,16 +146,26 @@ class PlaceDetailPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Image.asset(place['image']!, width: double.infinity, height: 200, fit: BoxFit.cover),
+          Image.asset(
+            place['image']!,
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(place['title']!, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                Text(
+                  place['title']!,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(height: 8),
-                Text('Weather: ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind: ${weather['wind']['speed']} km/h',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                Text(
+                  'Weather: ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind: ${weather['wind']['speed']} km/h',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                ),
                 SizedBox(height: 16),
                 Text(place['description']!, style: TextStyle(fontSize: 16)),
                 SizedBox(height: 16),
@@ -132,7 +173,10 @@ class PlaceDetailPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PlaceMapPage(place: place['title']!)),
+                      MaterialPageRoute(
+                        builder:
+                            (context) => PlaceMapPage(place: place['title']!),
+                      ),
                     );
                   },
                   child: Text('Open On Map'),
@@ -148,7 +192,7 @@ class PlaceDetailPage extends StatelessWidget {
 
 class PlaceMapPage extends StatelessWidget {
   final String place;
-  PlaceMapPage({required this.place});
+  const PlaceMapPage({super.key, required this.place});
 
   @override
   Widget build(BuildContext context) {

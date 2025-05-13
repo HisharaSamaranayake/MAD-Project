@@ -8,38 +8,49 @@ class CulturalHistoricalPage extends StatelessWidget {
     {
       'title': 'Sigiriya Rock Fortress',
       'image': 'assets/sigiriya.jpg',
-      'description': 'An ancient rock fortress and palace ruin known for its frescoes and gardens, Sigiriya is a UNESCO World Heritage Site and one of Sri Lanka’s most iconic landmarks.',
-      'location': '7.957,80.7603'
+      'description':
+          'An ancient rock fortress and palace ruin known for its frescoes and gardens, Sigiriya is a UNESCO World Heritage Site and one of Sri Lanka’s most iconic landmarks.',
+      'location': '7.957,80.7603',
     },
     {
       'title': 'Anuradhapura',
       'image': 'assets/anuradhapura.jpg',
-      'description': 'The sacred city of Anuradhapura is home to ancient Buddhist monuments, including stupas and monasteries, dating back to the 4th century BC.',
-      'location': '8.3313,80.4037'
+      'description':
+          'The sacred city of Anuradhapura is home to ancient Buddhist monuments, including stupas and monasteries, dating back to the 4th century BC.',
+      'location': '8.3313,80.4037',
     },
     {
       'title': 'Polonnaruwa',
       'image': 'assets/polonnaruwa.jpg',
-      'description': 'Once the medieval capital, Polonnaruwa is filled with beautifully preserved ruins of palaces, shrines, and statues.',
-      'location': '7.9403,81.0188'
+      'description':
+          'Once the medieval capital, Polonnaruwa is filled with beautifully preserved ruins of palaces, shrines, and statues.',
+      'location': '7.9403,81.0188',
     },
     {
       'title': 'Temple of the Tooth',
       'image': 'assets/kandy.jpg',
-      'description': 'Located in Kandy, this sacred temple houses the relic of the tooth of the Buddha and is an important pilgrimage site.',
-      'location': '7.2936,80.6417'
+      'description':
+          'Located in Kandy, this sacred temple houses the relic of the tooth of the Buddha and is an important pilgrimage site.',
+      'location': '7.2936,80.6417',
     },
   ];
 
+  const CulturalHistoricalPage({super.key});
+
   Future<Map<String, dynamic>> fetchWeather(String location) async {
-    final apiKey = '9f2f8683ec9121922d9117236593e66a'; // Your OpenWeatherMap API key
-    final url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?lat=${location.split(",")[0]}&lon=${location.split(",")[1]}&appid=$apiKey&units=metric');
+    final apiKey =
+        '9f2f8683ec9121922d9117236593e66a'; // Your OpenWeatherMap API key
+    final url = Uri.parse(
+      'https://api.openweathermap.org/data/2.5/weather?lat=${location.split(",")[0]}&lon=${location.split(",")[1]}&appid=$apiKey&units=metric',
+    );
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Failed to load weather data. Status code: ${response.statusCode}');
+        throw Exception(
+          'Failed to load weather data. Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       throw Exception('Failed to load weather data: $e');
@@ -63,15 +74,23 @@ class CulturalHistoricalPage extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
             margin: EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: InkWell(
               onTap: () async {
                 try {
-                  final weather = await fetchWeather(places[index]['location']!);
+                  final weather = await fetchWeather(
+                    places[index]['location']!,
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PlaceDetailPage(place: places[index], weather: weather),
+                      builder:
+                          (context) => PlaceDetailPage(
+                            place: places[index],
+                            weather: weather,
+                          ),
                     ),
                   );
                 } catch (e) {
@@ -80,10 +99,21 @@ class CulturalHistoricalPage extends StatelessWidget {
               },
               child: Column(
                 children: [
-                  Image.asset(places[index]['image']!, height: 150, width: double.infinity, fit: BoxFit.cover),
+                  Image.asset(
+                    places[index]['image']!,
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                   Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text(places[index]['title']!, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      places[index]['title']!,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -99,7 +129,11 @@ class PlaceDetailPage extends StatelessWidget {
   final Map<String, String> place;
   final Map<String, dynamic> weather;
 
-  PlaceDetailPage({required this.place, required this.weather});
+  const PlaceDetailPage({
+    super.key,
+    required this.place,
+    required this.weather,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +147,26 @@ class PlaceDetailPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Image.asset(place['image']!, width: double.infinity, height: 200, fit: BoxFit.cover),
+          Image.asset(
+            place['image']!,
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(place['title']!, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                Text(
+                  place['title']!,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(height: 8),
-                Text('Weather: ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind: ${weather['wind']['speed']} km/h',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                Text(
+                  'Weather: ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind: ${weather['wind']['speed']} km/h',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                ),
                 SizedBox(height: 16),
                 Text(place['description']!, style: TextStyle(fontSize: 16)),
                 SizedBox(height: 16),
@@ -130,7 +174,10 @@ class PlaceDetailPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PlaceMapPage(place: place['title']!)),
+                      MaterialPageRoute(
+                        builder:
+                            (context) => PlaceMapPage(place: place['title']!),
+                      ),
                     );
                   },
                   child: Text('Open On Map'),
@@ -146,7 +193,7 @@ class PlaceDetailPage extends StatelessWidget {
 
 class PlaceMapPage extends StatelessWidget {
   final String place;
-  PlaceMapPage({required this.place});
+  const PlaceMapPage({super.key, required this.place});
 
   @override
   Widget build(BuildContext context) {

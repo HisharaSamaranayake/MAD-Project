@@ -25,46 +25,54 @@ class EmergencyScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          ...services.map(
-                (service) {
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                color: Colors.blue[100], // Slightly darker blue shade
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: ListTile(
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  leading: const Icon(Icons.local_phone, color: Colors.redAccent, size: 28),
-                  title: Text(
-                    service['title']!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 17,
-                      color: Colors.black,
-                      letterSpacing: 0.4,
-                    ),
+          ...services.map((service) {
+            return Card(
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              color: Colors.blue[100], // Slightly darker blue shade
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                leading: const Icon(
+                  Icons.local_phone,
+                  color: Colors.redAccent,
+                  size: 28,
+                ),
+                title: Text(
+                  service['title']!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 17,
+                    color: Colors.black,
+                    letterSpacing: 0.4,
                   ),
-                  trailing: Container(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.red[700],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      service['number']!,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
+                ),
+                trailing: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.red[700],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    service['number']!,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
                     ),
                   ),
                 ),
-              );
-            },
-          ).toList(),
+              ),
+            );
+          }),
           const SizedBox(height: 8),
         ],
       ),
@@ -74,7 +82,9 @@ class EmergencyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD5EBFF), // Light background for the whole screen
+      backgroundColor: const Color(
+        0xFFD5EBFF,
+      ), // Light background for the whole screen
       appBar: AppBar(
         backgroundColor: const Color(0xFFD5EBFF),
         centerTitle: true,
@@ -119,7 +129,7 @@ class EmergencyScreen extends StatelessWidget {
             services: [
               {
                 'title': 'Sri Lanka Tourism Development Authority',
-                'number': '1912'
+                'number': '1912',
               },
             ],
           ),
@@ -138,7 +148,10 @@ class EmergencyScreen extends StatelessWidget {
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'HOME'),
         ],
       ),
