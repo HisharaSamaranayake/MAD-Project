@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 4,
-      color: Colors.white, // Standardized card color
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: Column(
@@ -183,17 +183,20 @@ class _SettingsPageState extends State<SettingsPage> {
             ]),
 
             settingsSection('Appearance', [
-              toggleRow('Dark Mode', isDarkMode, Icons.dark_mode, (val) => isDarkMode = val, description: 'Instantly changes the app theme'),
+              toggleRow('Dark Mode', isDarkMode, Icons.dark_mode, (val) => isDarkMode = val,
+                  description: 'Instantly changes the app theme'),
               settingsRow('Font', 'Default', Icons.font_download),
             ]),
 
             settingsSection('Accessibility', [
-              settingsRow('Font Size', 'Medium', Icons.text_fields, description: 'Affects all text sizes in the app'),
-              settingsRow('Font Color', 'Default', Icons.color_lens),
+              settingsRow('Font Size', 'Medium', Icons.text_fields,
+                  description: 'Affects all text sizes in the app'),
+              // Font Color row has been removed
             ]),
 
             settingsSection('Alerts', [
-              toggleRow('Allow Notifications', notificationsEnabled, Icons.notifications, (val) => notificationsEnabled = val),
+              toggleRow('Allow Notifications', notificationsEnabled, Icons.notifications,
+                      (val) => notificationsEnabled = val),
               settingsRow('Notifications Style', 'Banner', Icons.notification_important),
               toggleRow('Sound', soundEnabled, Icons.volume_up, (val) => soundEnabled = val),
               toggleRow('Vibrate', vibrateEnabled, Icons.vibration, (val) => vibrateEnabled = val),
@@ -207,13 +210,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 OutlinedButton(
                   onPressed: resetSettings,
                   style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(130, 50), // Increased button size
+                    minimumSize: const Size(130, 50),
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
                     side: const BorderSide(color: Colors.blue),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                     textStyle: const TextStyle(
-                      fontSize: 18, // Increased font size
-                      fontWeight: FontWeight.w600, // Bold font
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   child: const Text('Reset', style: TextStyle(color: Colors.blue)),
@@ -222,12 +225,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: saveSettings,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
-                    minimumSize: const Size(130, 50), // Increased button size
+                    minimumSize: const Size(130, 50),
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                     textStyle: const TextStyle(
-                      fontSize: 18, // Increased font size
-                      fontWeight: FontWeight.w600, // Bold font
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   child: const Text('Save', style: TextStyle(color: Colors.white)),
