@@ -154,6 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
         backgroundColor: const Color(0xFFD5EBFF),
