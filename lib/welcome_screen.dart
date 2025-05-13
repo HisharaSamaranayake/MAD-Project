@@ -47,15 +47,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         fit: StackFit.expand,
         children: [
           // 🌄 Background image
-          Image.asset(
-            'assets/Sri Lanka.jpeg',
-            fit: BoxFit.cover,
-          ),
+          Image.asset('assets/Sri Lanka.jpeg', fit: BoxFit.cover),
 
           // 🖤 Dark overlay for better contrast
-          Container(
-            color: Colors.black.withOpacity(0.4),
-          ),
+          Container(color: Colors.black.withOpacity(0.4)),
 
           // 🔲 Optional skip button (top right)
           Positioned(
