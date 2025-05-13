@@ -17,18 +17,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void initState() {
     super.initState();
 
-    // Animation controller for the welcome message
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
 
     _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
-
     _controller.forward();
 
-    // Navigate to home screen after a delay
-    Future.delayed(const Duration(seconds: 4), () {
+    // Delay navigation for 7 seconds to give time to see image and animation
+    Future.delayed(const Duration(seconds: 7), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -48,12 +46,36 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
+          // 🌄 Background image
           Image.asset(
-            'assets/welcomes.png', // Replace with your actual image
+            'assets/Sri Lanka.jpeg',
             fit: BoxFit.cover,
           ),
-          // Welcome message overlay
+
+          // 🖤 Dark overlay for better contrast
+          Container(
+            color: Colors.black.withOpacity(0.4),
+          ),
+
+          // 🔲 Optional skip button (top right)
+          Positioned(
+            top: 40,
+            right: 20,
+            child: TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+              child: const Text(
+                "Skip",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+
+          // 📝 Welcome text
           Center(
             child: FadeTransition(
               opacity: _fadeInAnimation,
@@ -65,26 +87,47 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(221, 0, 2, 1),
+                      color: Colors.white,
                       letterSpacing: 2,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 6,
+                          color: Colors.black,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 4),
                   Text(
                     'to',
                     style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black87,
+                      fontSize: 30,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 4,
+                          color: Colors.black45,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 10),
                   Text(
                     'Sri Lanka',
                     style: TextStyle(
-                      fontSize: 42,
+                      fontSize: 60,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black87,
+                      color: Colors.white,
                       letterSpacing: 1.5,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 6,
+                          color: Colors.black54,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
                     ),
                   ),
                 ],
