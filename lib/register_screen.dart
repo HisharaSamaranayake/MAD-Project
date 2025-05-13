@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'welcome_screen.dart';
+import 'welcome_screen.dart'; // Make sure this screen exists
+// import 'login_screen.dart'; // Uncomment if you want to use pushReplacement to LoginScreen
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -29,13 +30,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // Registration logic can go here (e.g., Firebase, API, etc.)
-
+    // Navigate to WelcomeScreen after successful registration
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const WelcomeScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
     );
   }
 
@@ -46,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return AlertDialog(
           title: const Text('Error'),
           content: Text(message),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('OK'),
@@ -58,8 +56,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _loginWith(String provider) {
-    // Add social login logic if necessary
     print('Login with $provider');
+    // Add logic for social login
+  }
+
+  Widget _socialCircle(IconData icon, Color iconColor, Color bgColor, String provider) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: GestureDetector(
+        onTap: () => _loginWith(provider),
+        child: CircleAvatar(
+          radius: 25,
+          backgroundColor: bgColor,
+          child: Icon(icon, color: iconColor, size: 28),
+        ),
+      ),
+    );
   }
 
   @override
@@ -82,7 +94,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/');
+                        Navigator.pop(context); // ✅ Basic back navigation
+
+                        // OPTIONAL: If you want to always go to LoginScreen instead of popping:
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        // );
                       },
                     ),
                   ),
@@ -93,22 +111,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     backgroundImage: AssetImage('assets/profile.png'),
                   ),
                   const SizedBox(height: 20),
+
+                  // Email Field
                   TextField(
                     controller: _emailController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Username or Email',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  // Phone Number Field
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(color: Colors.grey),
                         ),
                         child: const Text('+94'),
                       ),
@@ -117,61 +145,96 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: TextField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Phone Number',
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: Colors.white.withOpacity(0.9),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
+
+                  // Password Field
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Password',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  // Confirm Password Field
                   TextField(
                     controller: _confirmPasswordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Confirm Password',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                     ),
                   ),
                   const SizedBox(height: 20),
+
+                  // Create Account Button
                   ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal.shade200,
+                      backgroundColor: Colors.teal.shade100,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 2,
                     ),
-                    child: const Text('Create an account'),
+                    child: const Text(
+                      'Create an account',
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
+
                   const Text('or'),
                   const SizedBox(height: 10),
+
+                  // Social Login
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(thickness: 1)),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text('Log in with'),
+                      ),
+                      const Expanded(child: Divider(thickness: 1)),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.facebook, color: Colors.blue),
-                        onPressed: () => _loginWith('facebook'),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.g_mobiledata, color: Colors.red),
-                        onPressed: () => _loginWith('google'),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.apple, color: Colors.black),
-                        onPressed: () => _loginWith('apple'),
-                      ),
+                      _socialCircle(Icons.facebook, Colors.white, Colors.blue, 'facebook'),
+                      _socialCircle(Icons.g_mobiledata, Colors.white, Colors.red, 'google'),
+                      _socialCircle(Icons.apple, Colors.white, Colors.black, 'apple'),
                     ],
                   ),
                 ],
@@ -183,7 +246,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-
-
-
-

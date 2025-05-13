@@ -2,48 +2,47 @@ import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
+import 'Splash_Screen.dart';
 import 'home_screen.dart';
 import 'FoodCategoryScreen.dart';
-//import 'travelnote.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
 import 'cultural_historical_page.dart';
 import 'hillcountry_scenic_page.dart';
-import 'coste_beaches_page.dart';
-import 'nature_wildlife_page.dart';
-
+import 'coste_beaches_page.dart'; // Ensure this file contains the CoastalBeachesPage class
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Travel App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
+      title: 'Wander Lanka',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      initialRoute: '/splash', // Start with SplashScreen
       routes: {
-        '/': (context) => WelcomeScreen(),
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
-        //'/nature': (context) => NatureWildlifePage(),
+        '/splash': (context) => SplashScreen(),
+        '/': (context) => const LoginScreen(), // Start with LoginScreen after splash
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/welcome': (context) => const WelcomeScreen(), // After login, go to WelcomeScreen
         '/home': (context) => HomeScreen(),
-        '/food': (context) => FoodCategoryScreen(),
-       //'/travelnote': (context) => TravelNoteScreen(),
-        '/profile': (context) => MyProfilePage(),
-        '/emergency': (context) => EmergencyScreen(),
-        '/setting': (context) => SettingsPage(),
-        '/nature': (context) => NatureWildlifePage(),
+        '/food': (context) => const FoodCategoryScreen(),
+        '/profile': (context) => const MyProfilePage(),
+        '/emergency': (context) => const EmergencyScreen(),
+        '/setting': (context) => const SettingsPage(),
         '/beach': (context) => CoastalBeachesPage(),
         '/culture': (context) => CulturalHistoricalPage(),
         '/hillcountry': (context) => HillCountryScenicPage(),
 
-// Ensure this route is here
       },
     );
   }
 }
+
