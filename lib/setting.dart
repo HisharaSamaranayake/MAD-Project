@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -18,41 +20,43 @@ class _SettingsPageState extends State<SettingsPage> {
 
   int _selectedIndex = 2;
 
-  TextStyle getDynamicTextStyle(double baseSize) {
-    double scale;
-    switch (selectedFontSize) {
-      case 'Small':
-        scale = 0.85;
-        break;
-      case 'Large':
-        scale = 1.25;
-        break;
-      case 'Medium':
-      default:
-        scale = 1.0;
-    }
+  final List<String> fontOptions = ['Default', 'Serif', 'Monospace'];
+  final List<String> fontSizeOptions = ['Small', 'Medium', 'Large'];
 
-    String? fontFamily;
-    switch (selectedFont) {
-      case 'Serif':
-        fontFamily = 'serif';
-        break;
-      case 'Monospace':
-        fontFamily = 'monospace';
-        break;
-      case 'Default':
-      default:
-        fontFamily = null;
-    }
+  @override
+  void initState() {
+    super.initState();
+    loadPreferences();
+  }
 
-    return TextStyle(
-      fontSize: baseSize * scale,
-      fontFamily: fontFamily,
+  Future<void> loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notificationsEnabled = prefs.getBool('notifications') ?? true;
+      soundEnabled = prefs.getBool('sound') ?? true;
+      vibrateEnabled = prefs.getBool('vibrate') ?? true;
+      isDarkMode = prefs.getBool('darkMode') ?? false;
+      selectedFont = prefs.getString('font') ?? 'Default';
+      selectedFontSize = prefs.getString('fontSize') ?? 'Medium';
+    });
+  }
+
+  Future<void> savePreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notifications', notificationsEnabled);
+    await prefs.setBool('sound', soundEnabled);
+    await prefs.setBool('vibrate', vibrateEnabled);
+    await prefs.setBool('darkMode', isDarkMode);
+    await prefs.setString('font', selectedFont);
+    await prefs.setString('fontSize', selectedFontSize);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Settings saved!')),
     );
   }
 
-  void resetSettings() async {
-    bool confirmReset = await showDialog(
+  Future<void> resetSettings() async {
+    final confirmReset = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirm Reset'),
@@ -64,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
 
-    if (confirmReset) {
+    if (confirmReset == true) {
       setState(() {
         notificationsEnabled = true;
         soundEnabled = true;
@@ -73,13 +77,8 @@ class _SettingsPageState extends State<SettingsPage> {
         selectedFont = 'Default';
         selectedFontSize = 'Medium';
       });
+      savePreferences();
     }
-  }
-
-  void saveSettings() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Settings saved!')),
-    );
   }
 
   void _onItemTapped(int index) {
@@ -97,42 +96,6 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  void _showFontSelector() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: ['Default', 'Serif', 'Monospace'].map((font) {
-          return ListTile(
-            title: Text(font),
-            onTap: () {
-              setState(() => selectedFont = font);
-              Navigator.pop(context);
-            },
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  void _showFontSizeSelector() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: ['Small', 'Medium', 'Large'].map((size) {
-          return ListTile(
-            title: Text(size),
-            onTap: () {
-              setState(() => selectedFontSize = size);
-              Navigator.pop(context);
-            },
-          );
-        }).toList(),
-      ),
-    );
-  }
-
   Widget settingsSection(String title, List<Widget> children) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
@@ -146,7 +109,8 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             Text(
               title,
-              style: getDynamicTextStyle(18).copyWith(
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.blueAccent,
               ),
@@ -159,7 +123,8 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget settingsRow(String title, String value, IconData icon, {String? description, VoidCallback? onTap}) {
+  Widget settingsRow(String title, String value, IconData icon,
+      {String? description, VoidCallback? onTap}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -167,11 +132,14 @@ class _SettingsPageState extends State<SettingsPage> {
           dense: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
           leading: Icon(icon, color: Colors.blueAccent),
-          title: Text(title, style: getDynamicTextStyle(16).copyWith(fontWeight: FontWeight.w500)),
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(value, style: getDynamicTextStyle(15)),
+              Text(value, style: const TextStyle(fontSize: 15)),
               const Icon(Icons.chevron_right),
             ],
           ),
@@ -180,20 +148,27 @@ class _SettingsPageState extends State<SettingsPage> {
         if (description != null)
           Padding(
             padding: const EdgeInsets.only(left: 56.0, bottom: 8.0),
-            child: Text(description, style: getDynamicTextStyle(13).copyWith(color: Colors.grey)),
+            child: Text(
+              description,
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
+            ),
           ),
       ],
     );
   }
 
-  Widget toggleRow(String title, bool value, IconData icon, Function(bool)? onChanged, {String? description}) {
+  Widget toggleRow(String title, bool value, IconData icon, Function(bool)? onChanged,
+      {String? description}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SwitchListTile(
           dense: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-          title: Text(title, style: getDynamicTextStyle(16).copyWith(fontWeight: FontWeight.w500)),
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
           secondary: Icon(icon, color: Colors.blueAccent),
           value: value,
           onChanged: (val) {
@@ -206,7 +181,10 @@ class _SettingsPageState extends State<SettingsPage> {
         if (description != null)
           Padding(
             padding: const EdgeInsets.only(left: 56.0, bottom: 8.0),
-            child: Text(description, style: getDynamicTextStyle(13).copyWith(color: Colors.grey)),
+            child: Text(
+              description,
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
+            ),
           ),
       ],
     );
@@ -227,7 +205,10 @@ class _SettingsPageState extends State<SettingsPage> {
             onPressed: () => Navigator.pop(context),
           ),
           centerTitle: true,
-          title: Text('App Settings', style: getDynamicTextStyle(18).copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
+          title: const Text(
+            'App Settings',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
           actions: const [
             Padding(
               padding: EdgeInsets.only(right: 16.0),
@@ -241,14 +222,48 @@ class _SettingsPageState extends State<SettingsPage> {
               settingsRow('App Language', 'English', Icons.language),
             ]),
             settingsSection('Appearance', [
-              toggleRow('Dark Mode', isDarkMode, Icons.dark_mode, (val) => isDarkMode = val, description: 'Instantly changes the app theme'),
-              settingsRow('Font', selectedFont, Icons.font_download, onTap: _showFontSelector),
+              toggleRow('Dark Mode', isDarkMode, Icons.dark_mode, (val) => isDarkMode = val,
+                  description: 'Instantly changes the app theme'),
+              settingsRow('Font', selectedFont, Icons.font_download, onTap: () async {
+                final font = await showDialog<String>(
+                  context: context,
+                  builder: (context) => SimpleDialog(
+                    title: const Text('Select Font'),
+                    children: fontOptions.map((f) {
+                      return SimpleDialogOption(
+                        onPressed: () => Navigator.pop(context, f),
+                        child: Text(f),
+                      );
+                    }).toList(),
+                  ),
+                );
+                if (font != null) {
+                  setState(() => selectedFont = font);
+                }
+              }),
             ]),
             settingsSection('Accessibility', [
-              settingsRow('Font Size', selectedFontSize, Icons.text_fields, onTap: _showFontSizeSelector, description: 'Affects all text sizes in the app'),
+              settingsRow('Font Size', selectedFontSize, Icons.text_fields, onTap: () async {
+                final size = await showDialog<String>(
+                  context: context,
+                  builder: (context) => SimpleDialog(
+                    title: const Text('Select Font Size'),
+                    children: fontSizeOptions.map((f) {
+                      return SimpleDialogOption(
+                        onPressed: () => Navigator.pop(context, f),
+                        child: Text(f),
+                      );
+                    }).toList(),
+                  ),
+                );
+                if (size != null) {
+                  setState(() => selectedFontSize = size);
+                }
+              }, description: 'Affects all text sizes in the app'),
             ]),
             settingsSection('Alerts', [
-              toggleRow('Allow Notifications', notificationsEnabled, Icons.notifications, (val) => notificationsEnabled = val),
+              toggleRow('Allow Notifications', notificationsEnabled, Icons.notifications,
+                  (val) => notificationsEnabled = val),
               toggleRow('Sound', soundEnabled, Icons.volume_up, (val) => soundEnabled = val),
               toggleRow('Vibrate', vibrateEnabled, Icons.vibration, (val) => vibrateEnabled = val),
             ]),
@@ -263,18 +278,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
                     side: const BorderSide(color: Colors.blue),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                    textStyle: getDynamicTextStyle(18).copyWith(fontWeight: FontWeight.w600),
+                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   child: const Text('Reset', style: TextStyle(color: Colors.blue)),
                 ),
                 ElevatedButton(
-                  onPressed: saveSettings,
+                  onPressed: savePreferences,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     minimumSize: const Size(130, 50),
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                    textStyle: getDynamicTextStyle(18).copyWith(fontWeight: FontWeight.w600),
+                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   child: const Text('Save', style: TextStyle(color: Colors.white)),
                 ),
@@ -299,3 +314,4 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
+
