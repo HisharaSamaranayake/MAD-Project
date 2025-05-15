@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,7 +5,7 @@ class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -55,12 +54,43 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  TextStyle getDynamicTextStyle(double baseSize) {
+    double scale;
+    switch (selectedFontSize) {
+      case 'Small':
+        scale = 0.85;
+        break;
+      case 'Large':
+        scale = 1.25;
+        break;
+      default:
+        scale = 1.0;
+    }
+
+    String? fontFamily;
+    switch (selectedFont) {
+      case 'Serif':
+        fontFamily = 'serif';
+        break;
+      case 'Monospace':
+        fontFamily = 'monospace';
+        break;
+      default:
+        fontFamily = null;
+    }
+
+    return TextStyle(
+      fontSize: baseSize * scale,
+      fontFamily: fontFamily,
+    );
+  }
+
   Future<void> resetSettings() async {
-    final confirmReset = await showDialog<bool>(
+    bool? confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirm Reset'),
-        content: const Text('Are you sure you want to reset all settings to default?'),
+        content: const Text('Are you sure you want to reset all settings?'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
           TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Reset')),
@@ -68,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
 
-    if (confirmReset == true) {
+    if (confirm == true) {
       setState(() {
         notificationsEnabled = true;
         soundEnabled = true;
@@ -77,23 +107,58 @@ class _SettingsPageState extends State<SettingsPage> {
         selectedFont = 'Default';
         selectedFontSize = 'Medium';
       });
-      savePreferences();
+      await savePreferences();
     }
   }
 
   void _onItemTapped(int index) {
     if (index == _selectedIndex) return;
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    if (index == 0) {
-      Navigator.pushNamed(context, '/emergency');
-    } else if (index == 1) {
-      Navigator.pushNamed(context, '/favorites');
-    } else if (index == 2) {
-      Navigator.pushNamed(context, '/home');
+    setState(() => _selectedIndex = index);
+    switch (index) {
+      case 0: Navigator.pushNamed(context, '/emergency'); break;
+      case 1: Navigator.pushNamed(context, '/favorites'); break;
+      case 2: Navigator.pushNamed(context, '/home'); break;
     }
+  }
+
+  void _showFontSelector() {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text("Select Font"),
+        children: fontOptions.map((font) {
+          return RadioListTile(
+            title: Text(font),
+            value: font,
+            groupValue: selectedFont,
+            onChanged: (value) {
+              setState(() => selectedFont = value.toString());
+              Navigator.pop(context);
+            },
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  void _showFontSizeSelector() {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text("Select Font Size"),
+        children: fontSizeOptions.map((size) {
+          return RadioListTile(
+            title: Text(size),
+            value: size,
+            groupValue: selectedFontSize,
+            onChanged: (value) {
+              setState(() => selectedFontSize = value.toString());
+              Navigator.pop(context);
+            },
+          );
+        }).toList(),
+      ),
+    );
   }
 
   Widget settingsSection(String title, List<Widget> children) {
@@ -101,20 +166,12 @@ class _SettingsPageState extends State<SettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 4,
-      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
-              ),
-            ),
+            Text(title, style: getDynamicTextStyle(18).copyWith(fontWeight: FontWeight.bold, color: Colors.blueAccent)),
             const SizedBox(height: 12),
             ...children,
           ],
@@ -123,68 +180,47 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget settingsRow(String title, String value, IconData icon,
-      {String? description, VoidCallback? onTap}) {
+  Widget toggleRow(String title, bool value, IconData icon, ValueChanged<bool>? onChanged, {String? description}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SwitchListTile(
+          value: value,
+          onChanged: (val) {
+            setState(() {
+              if (title == 'Dark Mode') isDarkMode = val;
+              onChanged?.call(val);
+            });
+          },
+          title: Text(title, style: getDynamicTextStyle(16).copyWith(fontWeight: FontWeight.w500)),
+          secondary: Icon(icon, color: Colors.blueAccent),
+        ),
+        if (description != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 56.0),
+            child: Text(description, style: getDynamicTextStyle(13).copyWith(color: Colors.grey)),
+          )
+      ],
+    );
+  }
+
+  Widget settingsRow(String title, String value, IconData icon, {VoidCallback? onTap, String? description}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          dense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
           leading: Icon(icon, color: Colors.blueAccent),
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(value, style: const TextStyle(fontSize: 15)),
-              const Icon(Icons.chevron_right),
-            ],
-          ),
+          title: Text(title, style: getDynamicTextStyle(16).copyWith(fontWeight: FontWeight.w500)),
+          trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+            Text(value, style: getDynamicTextStyle(15)),
+            const Icon(Icons.chevron_right)
+          ]),
           onTap: onTap,
         ),
         if (description != null)
           Padding(
             padding: const EdgeInsets.only(left: 56.0, bottom: 8.0),
-            child: Text(
-              description,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget toggleRow(String title, bool value, IconData icon, Function(bool)? onChanged,
-      {String? description}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SwitchListTile(
-          dense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          secondary: Icon(icon, color: Colors.blueAccent),
-          value: value,
-          onChanged: (val) {
-            setState(() {
-              onChanged?.call(val);
-              if (title == 'Dark Mode') isDarkMode = val;
-            });
-          },
-        ),
-        if (description != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 56.0, bottom: 8.0),
-            child: Text(
-              description,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
-            ),
+            child: Text(description, style: getDynamicTextStyle(13).copyWith(color: Colors.grey)),
           ),
       ],
     );
@@ -205,16 +241,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onPressed: () => Navigator.pop(context),
           ),
           centerTitle: true,
-          title: const Text(
-            'App Settings',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: Icon(Icons.notifications, color: Colors.black),
-            ),
-          ],
+          title: Text('App Settings', style: getDynamicTextStyle(18).copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
         ),
         body: ListView(
           children: [
@@ -222,48 +249,14 @@ class _SettingsPageState extends State<SettingsPage> {
               settingsRow('App Language', 'English', Icons.language),
             ]),
             settingsSection('Appearance', [
-              toggleRow('Dark Mode', isDarkMode, Icons.dark_mode, (val) => isDarkMode = val,
-                  description: 'Instantly changes the app theme'),
-              settingsRow('Font', selectedFont, Icons.font_download, onTap: () async {
-                final font = await showDialog<String>(
-                  context: context,
-                  builder: (context) => SimpleDialog(
-                    title: const Text('Select Font'),
-                    children: fontOptions.map((f) {
-                      return SimpleDialogOption(
-                        onPressed: () => Navigator.pop(context, f),
-                        child: Text(f),
-                      );
-                    }).toList(),
-                  ),
-                );
-                if (font != null) {
-                  setState(() => selectedFont = font);
-                }
-              }),
+              toggleRow('Dark Mode', isDarkMode, Icons.dark_mode, (val) => isDarkMode = val),
+              settingsRow('Font', selectedFont, Icons.font_download, onTap: _showFontSelector),
             ]),
             settingsSection('Accessibility', [
-              settingsRow('Font Size', selectedFontSize, Icons.text_fields, onTap: () async {
-                final size = await showDialog<String>(
-                  context: context,
-                  builder: (context) => SimpleDialog(
-                    title: const Text('Select Font Size'),
-                    children: fontSizeOptions.map((f) {
-                      return SimpleDialogOption(
-                        onPressed: () => Navigator.pop(context, f),
-                        child: Text(f),
-                      );
-                    }).toList(),
-                  ),
-                );
-                if (size != null) {
-                  setState(() => selectedFontSize = size);
-                }
-              }, description: 'Affects all text sizes in the app'),
+              settingsRow('Font Size', selectedFontSize, Icons.text_fields, onTap: _showFontSizeSelector, description: 'Affects all text sizes in the app'),
             ]),
             settingsSection('Alerts', [
-              toggleRow('Allow Notifications', notificationsEnabled, Icons.notifications,
-                  (val) => notificationsEnabled = val),
+              toggleRow('Allow Notifications', notificationsEnabled, Icons.notifications, (val) => notificationsEnabled = val),
               toggleRow('Sound', soundEnabled, Icons.volume_up, (val) => soundEnabled = val),
               toggleRow('Vibrate', vibrateEnabled, Icons.vibration, (val) => vibrateEnabled = val),
             ]),
@@ -273,24 +266,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 OutlinedButton(
                   onPressed: resetSettings,
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(130, 50),
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
-                    side: const BorderSide(color: Colors.blue),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
                   child: const Text('Reset', style: TextStyle(color: Colors.blue)),
                 ),
                 ElevatedButton(
                   onPressed: savePreferences,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: const Size(130, 50),
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   child: const Text('Save', style: TextStyle(color: Colors.white)),
                 ),
               ],
@@ -314,4 +294,3 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-
