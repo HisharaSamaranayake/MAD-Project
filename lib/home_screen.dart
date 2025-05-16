@@ -76,6 +76,11 @@ class HomeScreen extends StatelessWidget {
               () => Navigator.pushNamed(context, '/cultural_safety'),
             ),
             _buildDrawerItem(
+              Icons.currency_exchange,
+              'currency_exchange',
+                  () => Navigator.pushNamed(context, '/currency_exchange'),
+            ),
+            _buildDrawerItem(
               Icons.note_add,
               'Travel Note',
               () => Navigator.pushNamed(context, '/travelnote'),

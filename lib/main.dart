@@ -17,6 +17,7 @@ import 'my_profile.dart';
 import 'setting.dart';
 import 'nature_wildlife_page.dart';
 import 'cultural_safety.dart';
+import 'currency_exchange.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +69,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const EmergencyScreen());
           case '/cultural_safety':
             return MaterialPageRoute(builder: (_) => const CulturalSafetyPage());
+          case '/currency_exchange':
+            return MaterialPageRoute(builder: (_) => const CurrencyExchangePage());
           case '/setting':
             return MaterialPageRoute(builder: (_) => const SettingsPage());
           case '/beach':
