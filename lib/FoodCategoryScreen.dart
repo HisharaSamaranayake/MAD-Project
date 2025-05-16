@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'SnacksScreen.dart';
 //import 'StreetFoodsScreen.dart';
+import 'SnacksScreen.dart';
 import 'StreetFoodsScreen.dart';
 import 'TeaCoffeeScreen.dart';
 //import 'TropicalFruitsScreen.dart';
+import 'TropicalFruitsScreen.dart';
 import 'WesternFoodsScreen.dart';
 import 'traditional_foods.dart'; // Import the separate file for each category
 
@@ -60,14 +62,14 @@ class FoodCategoryScreen extends StatelessWidget {
                     builder: (context) => TeaCoffeeScreen(),
                   ),
                 );
-              } /*else if (foodCategories[index]['title'] == 'Snacks') {
+              } else if (foodCategories[index]['title'] == 'Snacks') {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SnacksScreen(),
                   ),
                 );
-              } */else if (foodCategories[index]['title'] == 'Street Foods') {
+              } else if (foodCategories[index]['title'] == 'Street Foods') {
 
                 Navigator.push(
                   context,
@@ -76,13 +78,13 @@ class FoodCategoryScreen extends StatelessWidget {
                   ),
                 );
               } else if (foodCategories[index]['title'] == 'Tropical Fruits') {
-                /*
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => TropicalFruitsScreen(),
                   ),
-                );*/
+                );
               }
             },
             child: Card(
