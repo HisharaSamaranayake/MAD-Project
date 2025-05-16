@@ -16,6 +16,7 @@ import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
 import 'nature_wildlife_page.dart';
+import 'cultural_safety.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,6 +66,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const MyProfilePage());
           case '/emergency':
             return MaterialPageRoute(builder: (_) => const EmergencyScreen());
+          case '/cultural_safety':
+            return MaterialPageRoute(builder: (_) => const CulturalSafetyPage());
           case '/setting':
             return MaterialPageRoute(builder: (_) => const SettingsPage());
           case '/beach':

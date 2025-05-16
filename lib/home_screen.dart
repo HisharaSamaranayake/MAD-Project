@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
             _buildDrawerItem(
               Icons.contact_mail,
               'Cultural Norms And Safety',
-              () => Navigator.pop(context),
+              () => Navigator.pushNamed(context, '/cultural_safety'),
             ),
             _buildDrawerItem(
               Icons.note_add,
