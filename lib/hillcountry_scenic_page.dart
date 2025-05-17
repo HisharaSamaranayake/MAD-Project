@@ -1,57 +1,55 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'travel_note.dart';
 
 class HillCountryScenicPage extends StatelessWidget {
-  final List<Map<String, String>> places = const [
+  const HillCountryScenicPage({super.key});
+
+  static const List<Map<String, String>> places = [
     {
       'title': 'Nuwara Eliya',
       'image': 'assets/nuwaraeliya.jpg',
       'description':
-          'Known as "Little England," Nuwara Eliya is a cool, misty town surrounded by tea plantations, colonial architecture, and beautiful gardens.',
+      'Known as "Little England," Nuwara Eliya is a cool, misty town surrounded by tea plantations, colonial architecture, and beautiful gardens.',
       'location': '6.9708,80.7829',
     },
     {
       'title': 'Ella',
       'image': 'assets/ella.jpg',
       'description':
-          'Ella is a small town in the hill country with stunning views, lush greenery, and attractions like the Nine Arches Bridge and Ella Rock.',
+      'Ella is a small town in the hill country with stunning views, lush greenery, and attractions like the Nine Arches Bridge and Ella Rock.',
       'location': '6.8731,81.0462',
     },
     {
       'title': 'Horton Plains',
       'image': 'assets/horton.jpg',
       'description':
-          'A national park in the central highlands, Horton Plains is known for World’s End, Baker’s Falls, and diverse flora and fauna.',
+      'A national park in the central highlands, Horton Plains is known for World’s End, Baker’s Falls, and diverse flora and fauna.',
       'location': '6.8098,80.7998',
     },
     {
       'title': 'Adam’s Peak',
       'image': 'assets/adamspeak.jpg',
       'description':
-          'A sacred mountain peak with a footprint-shaped rock formation at the summit, revered by Buddhists, Hindus, and Muslims.',
+      'A sacred mountain peak with a footprint-shaped rock formation at the summit, revered by Buddhists, Hindus, and Muslims.',
       'location': '6.8096,80.4999',
     },
   ];
 
-  const HillCountryScenicPage({super.key});
-
   Future<Map<String, dynamic>> fetchWeather(String location) async {
-    final apiKey = '9f2f8683ec9121922d9117236593e66a'; // OpenWeatherMap API Key
-    final latLon = location.split(',');
+    final apiKey = '9f2f8683ec9121922d9117236593e66a';
+    final parts = location.split(',');
+    final lat = parts[0];
+    final lon = parts[1];
     final url = Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?lat=${latLon[0]}&lon=${latLon[1]}&appid=$apiKey&units=metric',
-    );
+        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
 
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        throw Exception('Weather API error: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Failed to fetch weather data: $e');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load weather data');
     }
   }
 
@@ -70,7 +68,6 @@ class HillCountryScenicPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         itemCount: places.length,
         itemBuilder: (context, index) {
-          final place = places[index];
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             shape: RoundedRectangleBorder(
@@ -78,37 +75,30 @@ class HillCountryScenicPage extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () async {
-                try {
-                  final weather = await fetchWeather(place['location']!);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PlaceDetailPage(place: place, weather: weather),
+                final weatherData = await fetchWeather(places[index]['location']!);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PlaceDetailPage(
+                      place: places[index],
+                      weather: weatherData,
                     ),
-                  );
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: $e')),
-                  );
-                }
+                  ),
+                );
               },
               child: Column(
                 children: [
                   Image.asset(
-                    place['image']!,
+                    places[index]['image']!,
+                    fit: BoxFit.cover,
                     height: 150,
                     width: double.infinity,
-                    fit: BoxFit.cover,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      place['title']!,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      places[index]['title']!,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -121,7 +111,7 @@ class HillCountryScenicPage extends StatelessWidget {
   }
 }
 
-class PlaceDetailPage extends StatelessWidget {
+class PlaceDetailPage extends StatefulWidget {
   final Map<String, String> place;
   final Map<String, dynamic> weather;
 
@@ -132,91 +122,114 @@ class PlaceDetailPage extends StatelessWidget {
   });
 
   @override
+  State<PlaceDetailPage> createState() => _PlaceDetailPageState();
+}
+
+class _PlaceDetailPageState extends State<PlaceDetailPage> {
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfLiked();
+  }
+
+  void _checkIfLiked() async {
+    final liked = await TravelNotePage.isParkLiked(widget.place['title']!);
+    if (mounted) {
+      setState(() {
+        isLiked = liked;
+      });
+    }
+  }
+
+  void toggleLike() async {
+    setState(() {
+      isLiked = !isLiked;
+    });
+
+    if (isLiked) {
+      await TravelNotePage.addLikedPark(
+          widget.place['title']!, widget.weather['main']['temp'].toString());
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Added to notepad')),
+        );
+      }
+    } else {
+      await TravelNotePage.removeLikedPark(widget.place['title']!);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Removed from notepad')),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final temperature = weather['main']['temp'];
-    final humidity = weather['main']['humidity'];
-    final windSpeed = weather['wind']['speed'];
+    final place = widget.place;
+    final weather = widget.weather;
+
+    final extendedDescription = place['description']! +
+        '\n\nThis scenic place offers beautiful views, local culture, and great spots for photography and hiking. Be sure to check weather conditions before visiting and respect nature and local customs.';
 
     return Scaffold(
       appBar: AppBar(
         title: Text(place['title']!),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
-        children: [
-          Image.asset(
-            place['image']!,
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  place['title']!,
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Weather: $temperature°C, Humidity: $humidity%, Wind: $windSpeed km/h',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  place['description']!,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            PlaceMapPage(place: place['title']!),
-                      ),
-                    );
-                  },
-                  child: const Text('Open On Map'),
-                ),
-              ],
+        actions: [
+          IconButton(
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_border,
+              color: isLiked ? Colors.red : null,
             ),
-          ),
+            onPressed: toggleLike,
+          )
         ],
       ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              place['image']!,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 220,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              place['title']!,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Weather: ${weather['weather'][0]['main']} - ${weather['main']['temp']}°C',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              extendedDescription,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 25),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Map feature coming soon!')),
+                  );
+                },
+                icon: const Icon(Icons.map),
+                label: const Text('View on Map'),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-
-class PlaceMapPage extends StatelessWidget {
-  final String place;
-
-  const PlaceMapPage({super.key, required this.place});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(place),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Center(
-        child: Text(
-          'Map of $place',
-          style: const TextStyle(fontSize: 18),
-        ),
-      ),
-    );
-  }
-}
-
-
