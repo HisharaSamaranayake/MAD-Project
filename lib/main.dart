@@ -13,7 +13,8 @@ import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
-import 'nature_wildlife_page.dart'; 
+import 'nature_wildlife_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure proper initialization before Firebase setup
