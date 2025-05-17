@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
+import 'travel_note.dart';
 import 'coastal_beaches.dart';
 import 'cultural_historical_page.dart';
 import 'hillcountry_scenic_page.dart';
@@ -51,6 +52,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const EmergencyScreen());
           case '/setting':
             return MaterialPageRoute(builder: (_) => const SettingsPage());
+          case '/travelnote':
+            return MaterialPageRoute(builder: (_) => const TravelNotePage());
           case '/beach':
             return MaterialPageRoute(builder: (_) => const CoastalBeachesPage());
           case '/culture':
