@@ -1,60 +1,51 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'travel_note.dart';
 
 class NatureWildlifePage extends StatelessWidget {
   const NatureWildlifePage({super.key});
 
-  // Updated the parks list to be constant
   static const List<Map<String, String>> parks = [
     {
       'title': 'Yala National Park',
       'image': 'assets/Yala.jpg',
       'description':
-          'Yala National Park is famous for its diverse wildlife, including leopards, elephants, and crocodiles. It has a mix of dry forests, grasslands, and lagoons, making it a must-visit for nature lovers.',
-      'location': '6.5186,81.541', // Latitude and Longitude for Yala
+      'Yala National Park is famous for its diverse wildlife, including leopards, elephants, and crocodiles.',
+      'location': '6.5186,81.541',
     },
     {
       'title': 'Kumana National Park',
       'image': 'assets/kumana.jpg',
-      'description':
-          'Kumana National Park is known for its rich birdlife, particularly the migratory birds that visit the Kumana Bird Sanctuary. It also houses elephants, deer, and other wildlife species.',
-      'location': '6.3958,81.4181', // Latitude and Longitude for Kumana
+      'description': 'Kumana National Park is known for its rich birdlife and elephants.',
+      'location': '6.3958,81.4181',
     },
     {
       'title': 'Horton Plains National Park',
       'image': 'assets/horton.jpg',
-      'description':
-          'Horton Plains is a highland plateau offering breathtaking views, including the famous World’s End cliff. It is home to unique flora and fauna, including the Sri Lankan sambar deer.',
-      'location': '6.9564,80.799', // Latitude and Longitude for Horton Plains
+      'description': 'Horton Plains is a highland plateau offering breathtaking views.',
+      'location': '6.9564,80.799',
     },
     {
       'title': 'Wilpattu National Park',
       'image': 'assets/wilpattu.jpg',
-      'description':
-          'Wilpattu is Sri Lanka’s largest national park, renowned for its "villus" (natural lakes), leopards, and untouched wilderness. It offers a secluded and immersive safari experience.',
-      'location': '8.4582,80.0518', // Latitude and Longitude for Wilpattu
+      'description': 'Wilpattu is Sri Lanka’s largest national park with untouched wilderness.',
+      'location': '8.4582,80.0518',
     },
   ];
 
   Future<Map<String, dynamic>> fetchWeather(String location) async {
-    final apiKey =
-        '9f2f8683ec9121922d9117236593e66a'; // Your OpenWeatherMap API key
+    final apiKey = '9f2f8683ec9121922d9117236593e66a';
+    final parts = location.split(',');
+    final lat = parts[0];
+    final lon = parts[1];
     final url = Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?lat=${location.split(",")[0]}&lon=${location.split(",")[1]}&appid=$apiKey&units=metric',
-    );
+        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
 
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        throw Exception(
-          'Failed to load weather data. Status code: ${response.statusCode}',
-        );
-      }
-    } catch (e) {
-      print('Error: $e');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
       throw Exception('Failed to load weather data');
     }
   }
@@ -63,43 +54,34 @@ class NatureWildlifePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('National Parks'),
+        title: const Text('National Parks'),
         backgroundColor: Colors.lightBlue.shade50,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: ListView.builder(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         itemCount: parks.length,
         itemBuilder: (context, index) {
           return Card(
-            margin: EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
             child: InkWell(
               onTap: () async {
-                try {
-                  // Show loading indicator
-                  final weatherData = await fetchWeather(
-                    parks[index]['location']!,
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => ParkDetailPage(
-                            park: parks[index],
-                            weather: weatherData,
-                          ),
+                final weatherData = await fetchWeather(parks[index]['location']!);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ParkDetailPage(
+                      park: parks[index],
+                      weather: weatherData,
                     ),
-                  );
-                } catch (e) {
-                  print('Error fetching weather: $e');
-                  // Optionally show an error message to the user
-                }
+                  ),
+                );
               },
               child: Column(
                 children: [
@@ -110,13 +92,10 @@ class NatureWildlifePage extends StatelessWidget {
                     width: double.infinity,
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       parks[index]['title']!,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -129,123 +108,128 @@ class NatureWildlifePage extends StatelessWidget {
   }
 }
 
-class ParkDetailPage extends StatelessWidget {
+class ParkDetailPage extends StatefulWidget {
   final Map<String, String> park;
   final Map<String, dynamic> weather;
 
-  const ParkDetailPage({super.key, required this.park, required this.weather});
+  const ParkDetailPage({
+    super.key,
+    required this.park,
+    required this.weather,
+  });
+
+  @override
+  State<ParkDetailPage> createState() => _ParkDetailPageState();
+}
+
+class _ParkDetailPageState extends State<ParkDetailPage> {
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfLiked();
+  }
+
+  void _checkIfLiked() async {
+    final liked = await TravelNotePage.isParkLiked(widget.park['title']!);
+    if (mounted) {
+      setState(() {
+        isLiked = liked;
+      });
+    }
+  }
+
+  void toggleLike() async {
+    setState(() {
+      isLiked = !isLiked;
+    });
+
+    if (isLiked) {
+      await TravelNotePage.addLikedPark(
+          widget.park['title']!, widget.weather['main']['temp'].toString());
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Added to notepad')),
+        );
+      }
+    } else {
+      await TravelNotePage.removeLikedPark(widget.park['title']!);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Removed from notepad')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final park = widget.park;
+    final weather = widget.weather;
+
+    final extendedDescription = park['description']! +
+        '\n\nThis national park offers a rich blend of scenic beauty and wildlife. Visitors can experience guided safaris, birdwatching, and nature photography. It is highly recommended to plan your trip during early mornings or late afternoons for the best sightings. Always follow park rules and respect the natural environment.';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(park['title']!),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
-        children: [
-          Image.asset(
-            park['image']!,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: 200,
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  park['title']!,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8),
-                // Weather info
-                Text(
-                  'Weather: ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind: ${weather['wind']['speed']} km/h',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                ),
-                SizedBox(height: 16),
-                Text(park['description']!, style: TextStyle(fontSize: 16)),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ParkMapPage(park: park['title']!),
-                      ),
-                    );
-                  },
-                  child: Text('Open On Map'),
-                ),
-                SizedBox(height: 16),
-              ],
+        actions: [
+          IconButton(
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_border,
+              color: isLiked ? Colors.red : null,
             ),
-          ),
+            onPressed: toggleLike,
+          )
         ],
       ),
-    );
-  }
-}
-
-class ParkMapPage extends StatelessWidget {
-  final String park;
-  const ParkMapPage({super.key, required this.park});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(park),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              color: Colors.green[100],
-              child: Center(
-                child: Text('Map of $park', style: TextStyle(fontSize: 18)),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              park['image']!,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 220,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              park['title']!,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Weather: ${weather['weather'][0]['main']} - ${weather['main']['temp']}°C',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              extendedDescription,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 25),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Map feature coming soon!')),
+                  );
+                },
+                icon: const Icon(Icons.map),
+                label: const Text('View on Map'),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Image.asset('assets/kirinda.jpg', height: 50),
-                    Text('Kirinda Beach'),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Image.asset('assets/kataragama.jpg', height: 50),
-                    Text('Kataragama'),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Image.asset('assets/thissamaharama.jpg', height: 50),
-                    Text('Thissamaharama'),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
 
 
