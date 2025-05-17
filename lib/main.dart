@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
+import 'cultural_safety.dart';
+import 'currency_exchange.dart';
 import 'travel_note.dart';
 import 'coastal_beaches.dart';
 import 'cultural_historical_page.dart';
@@ -55,6 +57,10 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const SettingsPage());
           case '/travelnote':
             return MaterialPageRoute(builder: (_) => const TravelNotePage());
+          case '/cultural_safety':
+            return MaterialPageRoute(builder: (_) => const CulturalSafetyPage());
+          case '/currency_exchange':
+            return MaterialPageRoute(builder: (_) => const CurrencyExchangePage());
           case '/beach':
             return MaterialPageRoute(builder: (_) => const CoastalBeachesPage());
           case '/culture':

@@ -70,16 +70,7 @@ class HomeScreen extends StatelessWidget {
               'Seasonal Experience',
               () => Navigator.pushNamed(context, '/season'),
             ),
-            _buildDrawerItem(
-              Icons.contact_mail,
-              'Cultural Norms And Safety',
-              () => Navigator.pushNamed(context, '/cultural_safety'),
-            ),
-            _buildDrawerItem(
-              Icons.currency_exchange,
-              'currency_exchange',
-                  () => Navigator.pushNamed(context, '/currency_exchange'),
-            ),
+
             _buildDrawerItem(
               Icons.note_add,
               'Travel Note',
@@ -94,6 +85,16 @@ class HomeScreen extends StatelessWidget {
               Icons.contacts,
               'Emergency Contacts',
               () => Navigator.pushNamed(context, '/emergency'),
+            ),
+            _buildDrawerItem(
+              Icons.contact_mail,
+              'Cultural Norms And Safety',
+                  () => Navigator.pushNamed(context, '/cultural_safety'),
+            ),
+            _buildDrawerItem(
+              Icons.currency_exchange,
+              'currency_exchange',
+                  () => Navigator.pushNamed(context, '/currency_exchange'),
             ),
             _buildDrawerItem(
               Icons.person,
@@ -189,7 +190,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/emergency');
               break;
             case 1:
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/travelnote');
               break;
             case 2:
               Navigator.pushNamed(context, '/profile');
@@ -198,7 +199,7 @@ class HomeScreen extends StatelessWidget {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Emergency'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.heart_broken), label: 'Favourite'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
