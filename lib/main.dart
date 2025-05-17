@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
-
-import 'settings_provider.dart';  // Adjust path as needed
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
 import 'coastal_beaches.dart';
 import 'cultural_historical_page.dart';
 import 'hillcountry_scenic_page.dart';
@@ -15,20 +12,12 @@ import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
-import 'nature_wildlife_page.dart';
-import 'cultural_safety.dart';
-import 'currency_exchange.dart';
+import 'nature_wildlife_page.dart'; 
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => SettingsProvider()..loadSettings(),
-      child: const MyApp(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure proper initialization before Firebase setup
+  await Firebase.initializeApp(); // Initialize Firebase
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -36,21 +25,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = Provider.of<SettingsProvider>(context);
-
-    final textTheme = settings.getTextTheme(
-      settings.isDarkMode ? Brightness.dark : Brightness.light,
-    );
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Wander Lanka',
-      theme: settings.isDarkMode
-          ? ThemeData.dark().copyWith(textTheme: textTheme)
-          : ThemeData.light().copyWith(textTheme: textTheme),
-      initialRoute: '/splash',
-      onGenerateRoute: (settingsRoute) {
-        switch (settingsRoute.name) {
+      theme: ThemeData(primarySwatch: Colors.teal),
+      initialRoute: '/splash', // Start with SplashScreen
+      onGenerateRoute: (settings) {
+        // Handle any dynamic routes or missing routes
+        switch (settings.name) {
           case '/splash':
             return MaterialPageRoute(builder: (_) => const SplashScreen());
           case '/login':
@@ -67,10 +49,6 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const MyProfilePage());
           case '/emergency':
             return MaterialPageRoute(builder: (_) => const EmergencyScreen());
-          case '/cultural_safety':
-            return MaterialPageRoute(builder: (_) => const CulturalSafetyPage());
-          case '/currency_exchange':
-            return MaterialPageRoute(builder: (_) => const CurrencyExchangePage());
           case '/setting':
             return MaterialPageRoute(builder: (_) => const SettingsPage());
           case '/beach':
@@ -82,7 +60,8 @@ class MyApp extends StatelessWidget {
           case '/nature':
             return MaterialPageRoute(builder: (_) => const NatureWildlifePage());
           default:
-            return MaterialPageRoute(builder: (_) => const SplashScreen());
+            // Handle unknown routes or show error page
+            return MaterialPageRoute(builder: (_) => const SplashScreen()); // Default route
         }
       },
     );
