@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
+import 'seasonal_experience_page.dart';
 import 'cultural_safety.dart';
 import 'currency_exchange.dart';
 import 'travel_note.dart';
@@ -49,6 +50,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const HomeScreen());
           case '/food':
             return MaterialPageRoute(builder: (_) => const FoodCategoryScreen());
+          case '/season':
+            return MaterialPageRoute(builder: (_) => SeasonalExperienceScreen());
           case '/profile':
             return MaterialPageRoute(builder: (_) => const MyProfilePage());
           case '/emergency':
@@ -70,7 +73,7 @@ class MyApp extends StatelessWidget {
           case '/nature':
             return MaterialPageRoute(builder: (_) => const NatureWildlifePage());
           default:
-            // Handle unknown routes or show error page
+          // Handle unknown routes or show error page
             return MaterialPageRoute(builder: (_) => const SplashScreen()); // Default route
         }
       },
