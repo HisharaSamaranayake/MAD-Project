@@ -18,14 +18,14 @@ class EventDetailScreen extends StatelessWidget {
         child: Column(
           children: [
             Image.asset(event['image']!),
-            SizedBox(height: 20),
+            SizedBox(height: 12),
             Text(
               event['event']!,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            Text(event['description']!),
-            SizedBox(height: 20),
+            SizedBox(height: 8),
+            Text(event['description']!, style: TextStyle(fontSize: 14)),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -35,11 +35,12 @@ class EventDetailScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('View on Map'),
+              child: Text('View on Map', style: TextStyle(fontSize: 14)),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.blueAccent,
                 backgroundColor: Colors.white,
                 side: BorderSide(color: Colors.blueAccent, width: 2),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
             ),
           ],
@@ -63,7 +64,10 @@ class MapScreen extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
       ),
       body: Center(
-        child: Text('Map for ${event['event']} will be shown here.'),
+        child: Text(
+          'Map for ${event['event']} will be shown here.',
+          style: TextStyle(fontSize: 16),
+        ),
       ),
     );
   }
@@ -85,120 +89,109 @@ class _SeasonalExperienceScreenState extends State<SeasonalExperienceScreen> {
         'event': 'Duruthu Perahera – Kelaniya',
         'image': 'assets/duruthu_perahera.jpg',
         'description':
-            'A grand religious procession marking Lord Buddha’s first visit to Sri Lanka.',
+        'A grand religious procession marking Lord Buddha’s first visit to Sri Lanka.'
       },
       {
         'event': 'South Coast Beach Season',
         'image': 'assets/south_couste.jpg',
-        'description':
-            'Perfect beach weather in Mirissa, Unawatuna, and Hikkaduwa.',
+        'description': 'Perfect beach weather in Mirissa, Unawatuna, and Hikkaduwa.'
       },
     ],
     'February': [
       {
         'event': 'Navam Perahera – Colombo',
         'image': 'assets/nawam_perahera.jpg',
-        'description':
-            'A major cultural parade with traditional dancers and elephants.',
+        'description': 'A major cultural parade with traditional dancers and elephants.'
       },
     ],
     'March': [
       {
         'event': 'Holi Festival – Northern Sri Lanka',
         'image': 'assets/holi.jpg',
-        'description':
-            'Celebrated by the Tamil community with colors, music, and dance.',
+        'description': 'Celebrated by the Tamil community with colors, music, and dance.'
       },
       {
         'event': 'Whale Watching – Mirissa',
         'image': 'assets/whale_watching.jpg',
-        'description':
-            'Best time to see blue whales and dolphins in the south coast.',
+        'description': 'Best time to see blue whales and dolphins in the south coast.'
       },
     ],
     'April': [
       {
         'event': 'Sinhala and Tamil New Year',
         'image': 'assets/new_year.jpg',
-        'description':
-            'Island-wide celebration with games, rituals, and traditional food.',
+        'description': 'Island-wide celebration with games, rituals, and traditional food.'
       },
     ],
     'May': [
       {
         'event': 'Vesak Festival',
         'image': 'assets/vesak.jpg',
-        'description':
-            'Streets and temples decorated with lanterns and lights celebrating Buddha’s life.',
+        'description': 'Streets and temples decorated with lanterns and lights celebrating Buddha’s life.'
       },
     ],
     'June': [
       {
-        'event': 'Poson Festival  Anuradhapura',
+        'event': 'Poson Festival – Anuradhapura',
         'image': 'assets/poson.jpg',
-        'description': 'Celebrates the arrival of Buddhism in Sri Lanka.',
+        'description': 'Celebrates the arrival of Buddhism in Sri Lanka.'
       },
     ],
     'July': [
       {
         'event': 'Kataragama Festival',
         'image': 'assets/katharagama.jpg',
-        'description': 'Pilgrimage with fire walking and devotional rituals.',
+        'description': 'Pilgrimage with fire walking and devotional rituals.'
       },
     ],
     'August': [
       {
         'event': 'Kandy Esala Perahera',
         'image': 'assets/esala.jpg',
-        'description':
-            'Grand 10-day procession with elephants, dancers, and cultural displays.',
+        'description': 'Grand 10-day procession with elephants, dancers, and cultural displays.'
       },
       {
-        'event': 'Nallur Festival  Jaffna',
+        'event': 'Nallur Festival – Jaffna',
         'image': 'assets/nallur.jpg',
-        'description':
-            'One of the most important Hindu festivals in the North.',
+        'description': 'One of the most important Hindu festivals in the North.'
       },
     ],
     'September': [
       {
-        'event': 'Little Adam’s Peak Hiking  Ella',
+        'event': 'Little Adam’s Peak Hiking – Ella',
         'image': 'assets/ella_peak.jpg',
-        'description': 'Ideal weather for scenic treks in the hill country.',
+        'description': 'Ideal weather for scenic treks in the hill country.'
       },
     ],
     'October': [
       {
-        'event': 'Deepavali  Hindu Communities',
+        'event': 'Deepavali – Hindu Communities',
         'image': 'assets/deepavali.jpg',
-        'description':
-            'The festival of lights celebrated in the North and East.',
+        'description': 'The festival of lights celebrated in the North and East.'
       },
     ],
     'November': [
       {
         'event': 'Kalpitiya Dolphin Watching Season Begins',
         'image': 'assets/dolphin.jpg',
-        'description':
-            'Popular marine activity in the northwestern coastal town.',
+        'description': 'Popular marine activity in the northwestern coastal town.'
       },
       {
-        'event': 'Rainy Season Retreats  Knuckles Range',
+        'event': 'Rainy Season Retreats – Knuckles Range',
         'image': 'assets/knuckles.jpg',
-        'description':
-            'Peaceful and misty mountain stays perfect for nature lovers.',
+        'description': 'Peaceful and misty mountain stays perfect for nature lovers.'
       },
     ],
     'December': [
       {
-        'event': 'Christmas Celebrations  Colombo',
+        'event': 'Christmas Celebrations – Colombo',
         'image': 'assets/cristmass.jpg',
-        'description': 'City decorations, carol singing, and joyful festivals.',
+        'description': 'City decorations, carol singing, and joyful festivals.'
       },
       {
-        'event': 'Hill Country Season  Nuwara Eliya & Ella',
+        'event': 'Hill Country Season – Nuwara Eliya & Ella',
         'image': 'assets/hill.jpg',
-        'description': 'Cool weather, tea plantations, and cozy holiday vibes.',
+        'description': 'Cool weather, tea plantations, and cozy holiday vibes.'
       },
     ],
   };
@@ -206,22 +199,24 @@ class _SeasonalExperienceScreenState extends State<SeasonalExperienceScreen> {
   @override
   Widget build(BuildContext context) {
     Map<String, List<Map<String, String>>> displayEvents =
-        selectedMonth == null
-            ? seasonalEvents
-            : {selectedMonth!: seasonalEvents[selectedMonth] ?? []};
+    selectedMonth == null
+        ? seasonalEvents
+        : {
+      selectedMonth!: seasonalEvents[selectedMonth] ?? [],
+    };
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Seasonal Experiences"),
+        title: Text("Seasonal Experiences", style: TextStyle(fontSize: 18)),
         backgroundColor: Colors.blueAccent,
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12.0),
             child: DropdownButton<String>(
               value: selectedMonth,
-              hint: Text('Select a month', style: TextStyle(fontSize: 18)),
+              hint: Text('Select a month', style: TextStyle(fontSize: 14)),
               isExpanded: true,
               onChanged: (String? newValue) {
                 setState(() {
@@ -229,11 +224,14 @@ class _SeasonalExperienceScreenState extends State<SeasonalExperienceScreen> {
                 });
               },
               items: [
-                DropdownMenuItem<String>(value: null, child: Text('Show All')),
+                DropdownMenuItem<String>(
+                  value: null,
+                  child: Text('Show All', style: TextStyle(fontSize: 14)),
+                ),
                 ...seasonalEvents.keys.map((month) {
                   return DropdownMenuItem<String>(
                     value: month,
-                    child: Text(month),
+                    child: Text(month, style: TextStyle(fontSize: 14)),
                   );
                 }).toList(),
               ],
@@ -241,69 +239,75 @@ class _SeasonalExperienceScreenState extends State<SeasonalExperienceScreen> {
           ),
           Expanded(
             child: ListView(
-              children:
-                  displayEvents.entries.expand((entry) {
-                    final month = entry.key;
-                    final events = entry.value;
-                    return [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          month,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
+              children: displayEvents.entries.expand((entry) {
+                final month = entry.key;
+                final events = entry.value;
+                return [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
+                    child: Text(
+                      month,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent),
+                    ),
+                  ),
+                  ...events.map((event) => Card(
+                    margin:
+                    EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EventDetailScreen(event: event),
                           ),
-                        ),
-                      ),
-                      ...events.map(
-                        (event) => Card(
-                          margin: EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16,
-                          ),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(12),
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
+                        );
+                      },
+                      child: Container(
+                        height: 200,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
                                 event['image']!,
-                                width: 80,
-                                height: 80,
+                                width: 140,
+                                height: 180,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            title: Text(event['event']!),
-                            subtitle: Text(
-                              event['description']!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          EventDetailScreen(event: event),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                event['event']!,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                              );
-                            },
-                          ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 16, color: Colors.grey),
+                          ],
                         ),
                       ),
-                      Divider(),
-                    ];
-                  }).toList(),
+                    ),
+                  )),
+                  Divider(),
+                ];
+              }).toList(),
             ),
           ),
         ],
