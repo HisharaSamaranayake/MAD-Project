@@ -11,7 +11,10 @@ class EventDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(event['event']!),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.lightBlue.shade50,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+        titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,7 +64,10 @@ class MapScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Event Location'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.lightBlue.shade50,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+        titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
       ),
       body: Center(
         child: Text(
@@ -207,8 +213,10 @@ class _SeasonalExperienceScreenState extends State<SeasonalExperienceScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Seasonal Experiences", style: TextStyle(fontSize: 18)),
-        backgroundColor: Colors.blueAccent,
+        title: Text("Seasonal Experiences", style: TextStyle(fontSize: 18, color: Colors.black)),
+        backgroundColor: Colors.lightBlue.shade50,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: [

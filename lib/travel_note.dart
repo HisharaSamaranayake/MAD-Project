@@ -190,7 +190,7 @@ class _TravelNotePageState extends State<TravelNotePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: _primaryGreen,
+        backgroundColor: Colors.lightBlue.shade50,
         title: const Text('Travel Notes'),
         centerTitle: true,
         elevation: 3,
@@ -222,7 +222,7 @@ class _TravelNotePageState extends State<TravelNotePage> {
               height: 48,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _primaryGreen,
+                  backgroundColor: Colors.lightBlue.shade50,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
