@@ -1,7 +1,16 @@
+import 'dart:io';
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:country_picker/country_picker.dart';
 import 'login_screen.dart';
+
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart'; // Facebook login (commented for now)
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,20 +25,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  File? _profileImage;
+  final ImagePicker _picker = ImagePicker();
+  String _countryCode = "+94";
 
-  String _errorMessage = '';
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() => _profileImage = File(pickedFile.path));
+    }
+  }
+
+  Future<String?> _convertImageToBase64(File? imageFile) async {
+    if (imageFile == null) return null;
+    final bytes = await imageFile.readAsBytes();
+    return base64Encode(bytes);
+  }
 
   Future<void> _register() async {
-    String email = _emailController.text.trim();
-    String phone = _phoneController.text.trim();
-    String password = _passwordController.text.trim();
-    String confirmPassword = _confirmPasswordController.text.trim();
+    final email = _emailController.text.trim().toLowerCase();
+    final phone = _phoneController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
-    print("Starting registration with email: $email");
-
-    if (email.isEmpty || phone.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       _showErrorDialog('All fields are required');
+      return;
+    }
+
+    if (!email.contains('@')) {
+      _showErrorDialog('Please enter a valid email address');
       return;
     }
 
@@ -39,63 +64,112 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     try {
-      print("Attempting Firebase registration...");
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      print("User registered: ${userCredential.user?.uid}");
+      final userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      final uid = userCredential.user!.uid;
+      final base64Image = await _convertImageToBase64(_profileImage);
+
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'uid': uid,
+        'email': email,
+        'phone': _countryCode + phone,
+        'name': null,
+        'profilePic': base64Image,
+      });
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
-    } on FirebaseAuthException catch (e) {
-      print("FirebaseAuthException: ${e.code} - ${e.message}");
-      setState(() {
-        _errorMessage = e.message ?? 'Registration failed. Please try again.';
-      });
-      _showErrorDialog(_errorMessage);
     } catch (e) {
-      print("Unexpected error: $e");
-      _showErrorDialog("An unexpected error occurred.");
+      _showErrorDialog('Registration failed: ${e.toString()}');
     }
   }
 
-  void _showErrorDialog(String message) {
+  Future<void> _loginWithGoogle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return;
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      final uid = userCredential.user!.uid;
+
+      final userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (!userDoc.exists) {
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'uid': uid,
+          'email': userCredential.user!.email,
+          'username': googleUser.displayName ?? '',
+          'phone': '',
+          'name': googleUser.displayName ?? '',
+          'profilePic': null,
+        });
+      }
+
+      // TODO: Navigate to home or welcome screen
+    } catch (e) {
+      _showErrorDialog("Google sign-in failed");
+    }
+  }
+
+  // Future<void> _loginWithFacebook() async {
+  //   // Facebook login functionality can be added here later
+  // }
+
+  void _showErrorDialog(String msg) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
+      builder: (_) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(msg),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 
-  void _loginWith(String provider) {
-    print('Login with $provider');
-    // Add social login integration here
-  }
-
-  Widget _socialCircle(IconData icon, Color iconColor, Color bgColor, String provider) {
+  Widget _socialCircle(
+    IconData icon,
+    Color iconColor,
+    Color bgColor,
+    VoidCallback onTap,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
-        onTap: () => _loginWith(provider),
+        onTap: onTap,
         child: CircleAvatar(
           radius: 25,
           backgroundColor: bgColor,
           child: Icon(icon, color: iconColor, size: 28),
         ),
       ),
+    );
+  }
+
+  void _selectCountryCode() {
+    showCountryPicker(
+      context: context,
+      showPhoneCode: true,
+      onSelect: (Country country) {
+        setState(() {
+          _countryCode = "+${country.phoneCode}";
+        });
+      },
     );
   }
 
@@ -116,144 +190,131 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.black),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('assets/profile.png'),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.white,
+                      backgroundImage: _profileImage != null
+                          ? FileImage(_profileImage!)
+                          : const AssetImage('assets/profile.png')
+                              as ImageProvider,
+                      child: _profileImage == null
+                          ? const Icon(
+                              Icons.add_a_photo,
+                              size: 30,
+                              color: Colors.grey,
+                            )
+                          : null,
+                    ),
                   ),
                   const SizedBox(height: 20),
-
-                  // Email Field
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      hintText: 'Username or Email',
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.9),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: const BorderSide(color: Colors.grey),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                    ),
+                    decoration: _inputDecoration('Email Address'),
                   ),
                   const SizedBox(height: 10),
-
-                  // Phone Number Field
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: Colors.grey),
+                      GestureDetector(
+                        onTap: _selectCountryCode,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 14,
+                          ),
+                          decoration: _boxDecoration(),
+                          child: Text(_countryCode),
                         ),
-                        child: const Text('+94'),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: TextField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            hintText: 'Phone Number',
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.9),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                          ),
+                          decoration: _inputDecoration('Phone Number'),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
-
-                  // Password Field
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.9),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: const BorderSide(color: Colors.grey),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                    ),
+                    decoration: _inputDecoration('Password'),
                   ),
                   const SizedBox(height: 10),
-
-                  // Confirm Password Field
                   TextField(
                     controller: _confirmPasswordController,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Confirm Password',
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.9),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: const BorderSide(color: Colors.grey),
+                    decoration: _inputDecoration('Confirm Password'),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: ElevatedButton(
+                      onPressed: _register,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal.shade100,
+                        minimumSize: const Size.fromHeight(44),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  // Register Button
-                  ElevatedButton(
-                    onPressed: _register,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal.shade100,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: const Text(
-                      'Create an account',
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
                   const Text('or'),
                   const SizedBox(height: 10),
-
                   Row(
-                    children: [
-                      const Expanded(child: Divider(thickness: 1)),
-                      const Padding(
+                    children: const [
+                      Expanded(child: Divider(thickness: 1)),
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Text('Log in with'),
                       ),
-                      const Expanded(child: Divider(thickness: 1)),
+                      Expanded(child: Divider(thickness: 1)),
                     ],
                   ),
                   const SizedBox(height: 15),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _socialCircle(Icons.facebook, Colors.white, Colors.blue, 'facebook'),
-                      _socialCircle(Icons.g_mobiledata, Colors.white, Colors.red, 'google'),
-                      _socialCircle(Icons.apple, Colors.white, Colors.black, 'apple'),
+                      // _socialCircle(
+                      //   Icons.facebook,
+                      //   Colors.white,
+                      //   Colors.blue,
+                      //   _loginWithFacebook,
+                      // ),
+                      _socialCircle(
+                        FontAwesomeIcons.google,
+                        Colors.white,
+                        Colors.red,
+                        _loginWithGoogle,
+                      ),
+                      _socialCircle(
+                        Icons.apple,
+                        Colors.white,
+                        Colors.black,
+                        () {}, // Apple login not implemented
+                      ),
                     ],
                   ),
                 ],
@@ -264,7 +325,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+
+  InputDecoration _inputDecoration(String hint) => InputDecoration(
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.9),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: const BorderSide(color: Colors.grey),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+      );
+
+  BoxDecoration _boxDecoration() => BoxDecoration(
+        color: Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.grey),
+      );
 }
+
+
+
+
+
 
 
 

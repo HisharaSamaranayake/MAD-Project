@@ -1,132 +1,101 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart'; // Make sure this file exists
+import 'home_screen.dart'; // Update the path as needed
 
-class WelcomeScreen extends StatefulWidget {
+class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
-
-  @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeInAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-
-    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
-    _controller.forward();
-
-    // Delay navigation for 7 seconds to give time to see image and animation
-    Future.delayed(const Duration(seconds: 7), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
-        fit: StackFit.expand,
         children: [
-          // 🌄 Background image
-          Image.asset('assets/Sri Lanka.jpeg', fit: BoxFit.cover),
-
-          // 🖤 Dark overlay for better contrast
-          Container(color: Colors.black.withOpacity(0.4)),
-
-          // 🔲 Optional skip button (top right)
-          Positioned(
-            top: 40,
-            right: 20,
-            child: TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
-              },
-              child: const Text(
-                "Skip",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/welcome_image.png',
+              fit: BoxFit.cover,
             ),
           ),
 
-          // 📝 Welcome text
-          Center(
-            child: FadeTransition(
-              opacity: _fadeInAnimation,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
-                    'WELCOME',
+          // Overlay content
+          SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+
+                // Greeting at the top
+                Column(
+                  children: [
+                    Text(
+                      'Ayubowan! 👋',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(blurRadius: 4, color: Colors.black, offset: Offset(1, 1)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Explore the island!',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white70,
+                        shadows: [
+                          Shadow(blurRadius: 4, color: Colors.black, offset: Offset(1, 1)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                Spacer(), // Push button + footer down
+
+                // Get Started Button close to bottom
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal[700],
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      minimumSize: Size(double.infinity, 50),
+                    ),
+                    child: Text(
+                      'Get Started',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Footer text at the very bottom
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Text(
+                    '🇱🇰 Powered by Locals | Designed for Wanderers',
                     style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 2,
+                      fontSize: 12,
+                      color: Colors.white70,
                       shadows: [
-                        Shadow(
-                          blurRadius: 6,
-                          color: Colors.black,
-                          offset: Offset(2, 2),
-                        ),
+                        Shadow(blurRadius: 4, color: Colors.black, offset: Offset(1, 1)),
                       ],
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    'to',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 4,
-                          color: Colors.black45,
-                          offset: Offset(1, 1),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Sri Lanka',
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      letterSpacing: 1.5,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 6,
-                          color: Colors.black54,
-                          offset: Offset(2, 2),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -134,3 +103,5 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
   }
 }
+
+
