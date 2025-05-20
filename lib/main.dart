@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
+import 'made_in_sl_category.dart';
 import 'seasonal_experience_page.dart';
 import 'cultural_safety.dart';
 import 'currency_exchange.dart';
@@ -48,6 +49,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const WelcomeScreen());
           case '/home':
             return MaterialPageRoute(builder: (_) => const HomeScreen());
+          case '/madeinsl':
+            return MaterialPageRoute(builder: (_) =>  MadeInSriLankaScreen());
           case '/food':
             return MaterialPageRoute(builder: (_) => const FoodCategoryScreen());
           case '/season':

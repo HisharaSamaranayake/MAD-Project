@@ -70,6 +70,11 @@ class HomeScreen extends StatelessWidget {
               'Seasonal Experience',
               () => Navigator.pushNamed(context, '/season'),
             ),
+            _buildDrawerItem(
+              Icons.settings,
+              'Made in SL',
+                  () => Navigator.pushNamed(context, '/madeinsl'),
+            ),
 
             _buildDrawerItem(
               Icons.note_add,

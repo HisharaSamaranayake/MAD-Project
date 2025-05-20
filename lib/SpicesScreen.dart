@@ -8,8 +8,6 @@ class SpicesScreen extends StatelessWidget {
     {'name': 'Black Pepper', 'image': 'assets/black_pepper.jpg'},
   ];
 
-  const SpicesScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +27,8 @@ class SpicesScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) => SpiceDetailScreen(spice: spiceItems[index]),
+                  builder: (context) =>
+                      SpiceDetailScreen(spice: spiceItems[index]),
                 ),
               );
             },
@@ -44,9 +42,8 @@ class SpicesScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(12),
-                        ),
+                        borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(spiceItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -59,10 +56,8 @@ class SpicesScreen extends StatelessWidget {
                     child: Text(
                       spiceItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -78,37 +73,33 @@ class SpicesScreen extends StatelessWidget {
 class SpiceDetailScreen extends StatelessWidget {
   final Map<String, String> spice;
 
-  SpiceDetailScreen({super.key, required this.spice});
+  SpiceDetailScreen({required this.spice});
 
   final Map<String, String> spiceDescriptions = {
-    'Cinnamon':
-        '''Sri Lankan cinnamon (Ceylon cinnamon) is known as the world's finest. Features:
+    'Cinnamon': '''Sri Lankan cinnamon (Ceylon cinnamon) is known as the world's finest. Features:
 
-â€¢ Thin, smooth bark with a sweet aroma  
-â€¢ Common in desserts, curries, and teas  
-â€¢ Exported globally  
-â€¢ Grown mainly in the southern coast''',
-    'Cardamom':
-        '''Cardamom is a fragrant spice used in sweet and savory dishes. Characteristics:
+• Thin, smooth bark with a sweet aroma  
+• Common in desserts, curries, and teas  
+• Exported globally  
+• Grown mainly in the southern coast''',
+    'Cardamom': '''Cardamom is a fragrant spice used in sweet and savory dishes. Characteristics:
 
-â€¢ Small green pods with tiny black seeds  
-â€¢ Strong aroma and slightly sweet taste  
-â€¢ Used in curries, desserts, and herbal drinks  
-â€¢ Grown in the hill country''',
-    'Cloves':
-        '''Cloves are dried flower buds with a strong, pungent flavor. Highlights:
+• Small green pods with tiny black seeds  
+• Strong aroma and slightly sweet taste  
+• Used in curries, desserts, and herbal drinks  
+• Grown in the hill country''',
+    'Cloves': '''Cloves are dried flower buds with a strong, pungent flavor. Highlights:
 
-â€¢ Used in rice dishes and spice blends  
-â€¢ Contains essential oils with medicinal value  
-â€¢ Grown in moist, tropical climates  
-â€¢ Key ingredient in Sri Lankan curry powder''',
-    'Black Pepper':
-        '''Black pepper is a bold spice used for seasoning. Key aspects:
+• Used in rice dishes and spice blends  
+• Contains essential oils with medicinal value  
+• Grown in moist, tropical climates  
+• Key ingredient in Sri Lankan curry powder''',
+    'Black Pepper': '''Black pepper is a bold spice used for seasoning. Key aspects:
 
-â€¢ Grown widely in Sri Lanka's wet zones  
-â€¢ Sharp, hot flavor used in nearly every dish  
-â€¢ Integral to spice blends and pickles  
-â€¢ Known as the "King of Spices"''',
+• Grown widely in Sri Lanka's wet zones  
+• Sharp, hot flavor used in nearly every dish  
+• Integral to spice blends and pickles  
+• Known as the "King of Spices"''',
   };
 
   @override
@@ -117,12 +108,8 @@ class SpiceDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(spice['name']!)),
       body: Column(
         children: [
-          Image.asset(
-            spice['image']!,
-            width: double.infinity,
-            height: 250,
-            fit: BoxFit.cover,
-          ),
+          Image.asset(spice['image']!,
+              width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -135,8 +122,8 @@ class SpiceDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) => SpiceMapScreen(spiceName: spice['name']!),
+                  builder: (context) =>
+                      SpiceMapScreen(spiceName: spice['name']!),
                 ),
               );
             },
@@ -151,7 +138,7 @@ class SpiceDetailScreen extends StatelessWidget {
 class SpiceMapScreen extends StatelessWidget {
   final String spiceName;
 
-  const SpiceMapScreen({super.key, required this.spiceName});
+  SpiceMapScreen({required this.spiceName});
 
   @override
   Widget build(BuildContext context) {

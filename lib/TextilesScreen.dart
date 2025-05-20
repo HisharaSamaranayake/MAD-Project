@@ -8,8 +8,6 @@ class TextilesScreen extends StatelessWidget {
     {'name': 'Sarong', 'image': 'assets/sarong.jpg'},
   ];
 
-  const TextilesScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +27,8 @@ class TextilesScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) =>
-                          TextileDetailScreen(textile: textileItems[index]),
+                  builder: (context) =>
+                      TextileDetailScreen(textile: textileItems[index]),
                 ),
               );
             },
@@ -45,9 +42,8 @@ class TextilesScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(12),
-                        ),
+                        borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(textileItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -60,10 +56,8 @@ class TextilesScreen extends StatelessWidget {
                     child: Text(
                       textileItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -79,37 +73,33 @@ class TextilesScreen extends StatelessWidget {
 class TextileDetailScreen extends StatelessWidget {
   final Map<String, String> textile;
 
-  TextileDetailScreen({super.key, required this.textile});
+  TextileDetailScreen({required this.textile});
 
   final Map<String, String> textileDescriptions = {
-    'Batik':
-        '''Batik is a unique textile art using wax-resistant dyeing. Features:
+    'Batik': '''Batik is a unique textile art using wax-resistant dyeing. Features:
 
-â€¢ Colorful patterns and floral designs  
-â€¢ Handcrafted with wax and dye  
-â€¢ Popular for dresses, shirts, and wall hangings  
-â€¢ Found in places like Kandy and Galle''',
-    'Handloom':
-        '''Handloom textiles are woven using traditional methods. Highlights:
+• Colorful patterns and floral designs  
+• Handcrafted with wax and dye  
+• Popular for dresses, shirts, and wall hangings  
+• Found in places like Kandy and Galle''',
+    'Handloom': '''Handloom textiles are woven using traditional methods. Highlights:
 
-â€¢ Crafted on manual looms  
-â€¢ Bright stripes and natural dyes  
-â€¢ Used in saris, bags, and home dÃ©cor  
-â€¢ Supports rural artisans''',
-    'Kandyan Saree':
-        '''The Kandyan Saree (Osariya) is traditional attire worn by Sri Lankan women:
+• Crafted on manual looms  
+• Bright stripes and natural dyes  
+• Used in saris, bags, and home décor  
+• Supports rural artisans''',
+    'Kandyan Saree': '''The Kandyan Saree (Osariya) is traditional attire worn by Sri Lankan women:
 
-â€¢ Draped in a unique style from Kandy  
-â€¢ Symbol of elegance and tradition  
-â€¢ Often worn at ceremonies and weddings  
-â€¢ Features rich fabric and borders''',
-    'Sarong':
-        '''Sarongs are versatile wrap-around garments worn by men and women:
+• Draped in a unique style from Kandy  
+• Symbol of elegance and tradition  
+• Often worn at ceremonies and weddings  
+• Features rich fabric and borders''',
+    'Sarong': '''Sarongs are versatile wrap-around garments worn by men and women:
 
-â€¢ Comfortable and breathable  
-â€¢ Comes in colorful checks and patterns  
-â€¢ Worn for daily use or traditional events  
-â€¢ Common in coastal and village areas''',
+• Comfortable and breathable  
+• Comes in colorful checks and patterns  
+• Worn for daily use or traditional events  
+• Common in coastal and village areas''',
   };
 
   @override
@@ -118,12 +108,8 @@ class TextileDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(textile['name']!)),
       body: Column(
         children: [
-          Image.asset(
-            textile['image']!,
-            width: double.infinity,
-            height: 250,
-            fit: BoxFit.cover,
-          ),
+          Image.asset(textile['image']!,
+              width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -136,9 +122,8 @@ class TextileDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) =>
-                          TextileMapScreen(textileName: textile['name']!),
+                  builder: (context) =>
+                      TextileMapScreen(textileName: textile['name']!),
                 ),
               );
             },
@@ -153,7 +138,7 @@ class TextileDetailScreen extends StatelessWidget {
 class TextileMapScreen extends StatelessWidget {
   final String textileName;
 
-  const TextileMapScreen({super.key, required this.textileName});
+  TextileMapScreen({required this.textileName});
 
   @override
   Widget build(BuildContext context) {

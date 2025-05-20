@@ -8,8 +8,6 @@ class HandicraftsScreen extends StatelessWidget {
     {'name': 'Wood Carving', 'image': 'assets/wood_carving.jpg'},
   ];
 
-  const HandicraftsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +27,8 @@ class HandicraftsScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) =>
-                          HandicraftDetailScreen(item: handicraftItems[index]),
+                  builder: (context) =>
+                      HandicraftDetailScreen(item: handicraftItems[index]),
                 ),
               );
             },
@@ -45,9 +42,8 @@ class HandicraftsScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(12),
-                        ),
+                        borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(handicraftItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -60,10 +56,8 @@ class HandicraftsScreen extends StatelessWidget {
                     child: Text(
                       handicraftItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -79,37 +73,33 @@ class HandicraftsScreen extends StatelessWidget {
 class HandicraftDetailScreen extends StatelessWidget {
   final Map<String, String> item;
 
-  HandicraftDetailScreen({super.key, required this.item});
+  HandicraftDetailScreen({required this.item});
 
   final Map<String, String> itemDescriptions = {
-    'Lacquer Work':
-        '''Lacquer work is a vibrant and traditional decorative art form in Sri Lanka. Key aspects:
+    'Lacquer Work': '''Lacquer work is a vibrant and traditional decorative art form in Sri Lanka. Key aspects:
 
-â€¢ Bright-colored patterns on wood and bamboo  
-â€¢ Applied using melted resin and dyes  
-â€¢ Common in Matale and Kandy  
-â€¢ Used for ornaments, walking sticks, and containers''',
-    'Beeralu Lace':
-        '''Beeralu lace is a delicate handmade lacework tradition. Highlights include:
+• Bright-colored patterns on wood and bamboo  
+• Applied using melted resin and dyes  
+• Common in Matale and Kandy  
+• Used for ornaments, walking sticks, and containers''',
+    'Beeralu Lace': '''Beeralu lace is a delicate handmade lacework tradition. Highlights include:
 
-â€¢ Created using wooden bobbins  
-â€¢ Introduced during the Portuguese era  
-â€¢ Crafted in coastal areas like Galle  
-â€¢ Common in tablecloths, dresses, and curtains''',
-    'Brassware':
-        '''Brassware involves the crafting of artistic and functional brass items. Details:
+• Created using wooden bobbins  
+• Introduced during the Portuguese era  
+• Crafted in coastal areas like Galle  
+• Common in tablecloths, dresses, and curtains''',
+    'Brassware': '''Brassware involves the crafting of artistic and functional brass items. Details:
 
-â€¢ Includes lamps, trays, vases, and religious statues  
-â€¢ Features detailed engraving and embossing  
-â€¢ Prominent in Kandy and central highlands  
-â€¢ Reflects traditional Sinhala Buddhist aesthetics''',
-    'Wood Carving':
-        '''Wood carving is a heritage art in Sri Lanka with spiritual significance. Features include:
+• Includes lamps, trays, vases, and religious statues  
+• Features detailed engraving and embossing  
+• Prominent in Kandy and central highlands  
+• Reflects traditional Sinhala Buddhist aesthetics''',
+    'Wood Carving': '''Wood carving is a heritage art in Sri Lanka with spiritual significance. Features include:
 
-â€¢ Intricate patterns on doors, windows, and pillars  
-â€¢ Used in temples and homes  
-â€¢ Made with tools passed down generations  
-â€¢ Rich in floral and animal motifs''',
+• Intricate patterns on doors, windows, and pillars  
+• Used in temples and homes  
+• Made with tools passed down generations  
+• Rich in floral and animal motifs''',
   };
 
   @override
@@ -118,12 +108,8 @@ class HandicraftDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(item['name']!)),
       body: Column(
         children: [
-          Image.asset(
-            item['image']!,
-            width: double.infinity,
-            height: 250,
-            fit: BoxFit.cover,
-          ),
+          Image.asset(item['image']!,
+              width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -136,8 +122,8 @@ class HandicraftDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) => HandicraftMapScreen(itemName: item['name']!),
+                  builder: (context) =>
+                      HandicraftMapScreen(itemName: item['name']!),
                 ),
               );
             },
@@ -152,7 +138,7 @@ class HandicraftDetailScreen extends StatelessWidget {
 class HandicraftMapScreen extends StatelessWidget {
   final String itemName;
 
-  const HandicraftMapScreen({super.key, required this.itemName});
+  HandicraftMapScreen({required this.itemName});
 
   @override
   Widget build(BuildContext context) {
