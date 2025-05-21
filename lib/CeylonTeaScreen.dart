@@ -8,7 +8,7 @@ class CeylonTeaScreen extends StatelessWidget {
     {'name': 'Herbal Infusions', 'image': 'assets/herbal_tea.jpg'},
   ];
 
-  CeylonTeaScreen({super.key});
+  const CeylonTeaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,7 @@ class CeylonTeaScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      TeaDetailScreen(tea: teaItems[index]),
+                  builder: (context) => TeaDetailScreen(tea: teaItems[index]),
                 ),
               );
             },
@@ -44,8 +43,9 @@ class CeylonTeaScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
                         image: DecorationImage(
                           image: AssetImage(teaItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -58,8 +58,10 @@ class CeylonTeaScreen extends StatelessWidget {
                     child: Text(
                       teaItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -78,30 +80,34 @@ class TeaDetailScreen extends StatelessWidget {
   TeaDetailScreen({super.key, required this.tea});
 
   final Map<String, String> teaDescriptions = {
-    'Black Tea': '''Ceylon Black Tea is the most popular tea in Sri Lanka. Features include:
+    'Black Tea':
+        '''Ceylon Black Tea is the most popular tea in Sri Lanka. Features include:
 
-• Rich in color and strong in flavor  
-• Grown mainly in Uva, Dimbula, and Nuwara Eliya regions  
-• Often enjoyed with milk or sugar  
-• Used in breakfast blends worldwide''',
-    'Green Tea': '''Ceylon Green Tea is known for its delicate taste and health benefits:
+â€¢ Rich in color and strong in flavor  
+â€¢ Grown mainly in Uva, Dimbula, and Nuwara Eliya regions  
+â€¢ Often enjoyed with milk or sugar  
+â€¢ Used in breakfast blends worldwide''',
+    'Green Tea':
+        '''Ceylon Green Tea is known for its delicate taste and health benefits:
 
-• Light and refreshing flavor  
-• Minimal oxidation during processing  
-• Rich in antioxidants  
-• Commonly consumed for weight loss and wellness''',
-    'White Tea': '''Ceylon White Tea is the rarest and most prized variety. It is:
+â€¢ Light and refreshing flavor  
+â€¢ Minimal oxidation during processing  
+â€¢ Rich in antioxidants  
+â€¢ Commonly consumed for weight loss and wellness''',
+    'White Tea':
+        '''Ceylon White Tea is the rarest and most prized variety. It is:
 
-• Made from young tea buds  
-• Extremely light and subtle in taste  
-• Hand-picked and sun-dried  
-• Grown mostly in Nuwara Eliya''',
-    'Herbal Infusions': '''These are caffeine-free blends made with herbs and spices:
+â€¢ Made from young tea buds  
+â€¢ Extremely light and subtle in taste  
+â€¢ Hand-picked and sun-dried  
+â€¢ Grown mostly in Nuwara Eliya''',
+    'Herbal Infusions':
+        '''These are caffeine-free blends made with herbs and spices:
 
-• Includes chamomile, lemongrass, and cinnamon blends  
-• Known for calming and digestive benefits  
-• Naturally sweet and aromatic  
-• Often served in wellness retreats''',
+â€¢ Includes chamomile, lemongrass, and cinnamon blends  
+â€¢ Known for calming and digestive benefits  
+â€¢ Naturally sweet and aromatic  
+â€¢ Often served in wellness retreats''',
   };
 
   @override
@@ -110,8 +116,12 @@ class TeaDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(tea['name']!)),
       body: Column(
         children: [
-          Image.asset(tea['image']!,
-              width: double.infinity, height: 250, fit: BoxFit.cover),
+          Image.asset(
+            tea['image']!,
+            width: double.infinity,
+            height: 250,
+            fit: BoxFit.cover,
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -124,8 +134,7 @@ class TeaDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      TeaMapScreen(teaName: tea['name']!),
+                  builder: (context) => TeaMapScreen(teaName: tea['name']!),
                 ),
               );
             },

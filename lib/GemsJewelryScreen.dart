@@ -4,11 +4,11 @@ class GemsJewelryScreen extends StatelessWidget {
   final List<Map<String, String>> gemItems = [
     {'name': 'Blue Sapphire', 'image': 'assets/blue_sapphire.jpg'},
     {'name': 'Ruby', 'image': 'assets/ruby.jpg'},
-    {'name': 'Cat’s Eye', 'image': 'assets/cats_eye.jpg'},
+    {'name': 'Catâ€™s Eye', 'image': 'assets/cats_eye.jpg'},
     {'name': 'Moonstone', 'image': 'assets/moonstone.jpg'},
   ];
 
-  GemsJewelryScreen({super.key});
+  const GemsJewelryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,7 @@ class GemsJewelryScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      GemDetailScreen(gem: gemItems[index]),
+                  builder: (context) => GemDetailScreen(gem: gemItems[index]),
                 ),
               );
             },
@@ -44,8 +43,9 @@ class GemsJewelryScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
                         image: DecorationImage(
                           image: AssetImage(gemItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -58,8 +58,10 @@ class GemsJewelryScreen extends StatelessWidget {
                     child: Text(
                       gemItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -80,28 +82,28 @@ class GemDetailScreen extends StatelessWidget {
   final Map<String, String> gemDescriptions = {
     'Blue Sapphire': '''Known as the "Gem of Heaven", Ceylon Blue Sapphire is:
 
-• Highly prized for its deep blue color  
-• Found in Ratnapura, Sri Lanka’s “City of Gems”  
-• Often used in royal and luxury jewelry  
-• A symbol of wisdom, wealth, and divine favor''',
+â€¢ Highly prized for its deep blue color  
+â€¢ Found in Ratnapura, Sri Lankaâ€™s â€œCity of Gemsâ€  
+â€¢ Often used in royal and luxury jewelry  
+â€¢ A symbol of wisdom, wealth, and divine favor''',
     'Ruby': '''Ceylon Rubies are radiant red gemstones that signify passion:
 
-• Famous for their fiery hue  
-• Rare and highly valuable  
-• Traditionally associated with power and love  
-• Found in southern and central Sri Lanka''',
-    'Cat’s Eye': '''Cat’s Eye, or Chrysoberyl, is a mystical and unique gem:
+â€¢ Famous for their fiery hue  
+â€¢ Rare and highly valuable  
+â€¢ Traditionally associated with power and love  
+â€¢ Found in southern and central Sri Lanka''',
+    'Catâ€™s Eye': '''Catâ€™s Eye, or Chrysoberyl, is a mystical and unique gem:
 
-• Displays a bright reflective band like a cat’s eye  
-• Believed to bring protection and prosperity  
-• Typically honey-yellow to greenish in color  
-• Highly regarded in astrology''',
+â€¢ Displays a bright reflective band like a catâ€™s eye  
+â€¢ Believed to bring protection and prosperity  
+â€¢ Typically honey-yellow to greenish in color  
+â€¢ Highly regarded in astrology''',
     'Moonstone': '''Sri Lankan Moonstone is admired for its glowing sheen:
 
-• Found mainly in Meetiyagoda  
-• Shows a bluish-white shimmer (adularescence)  
-• Considered a symbol of peace and femininity  
-• Popular in handcrafted silver jewelry''',
+â€¢ Found mainly in Meetiyagoda  
+â€¢ Shows a bluish-white shimmer (adularescence)  
+â€¢ Considered a symbol of peace and femininity  
+â€¢ Popular in handcrafted silver jewelry''',
   };
 
   @override
@@ -110,8 +112,12 @@ class GemDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(gem['name']!)),
       body: Column(
         children: [
-          Image.asset(gem['image']!,
-              width: double.infinity, height: 250, fit: BoxFit.cover),
+          Image.asset(
+            gem['image']!,
+            width: double.infinity,
+            height: 250,
+            fit: BoxFit.cover,
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -124,8 +130,7 @@ class GemDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      GemMapScreen(gemName: gem['name']!),
+                  builder: (context) => GemMapScreen(gemName: gem['name']!),
                 ),
               );
             },
