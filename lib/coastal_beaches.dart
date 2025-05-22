@@ -216,7 +216,6 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
               'Weather: ${weather['weather'][0]['main']} - ${weather['main']['temp']}°C, Humidity: ${weather['main']['humidity']}%, Wind Speed: ${weather['wind']['speed']} m/s',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-
             const SizedBox(height: 10),
             Text(
               extendedDescription,
@@ -229,7 +228,6 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Map feature coming soon!')),
                   );
-
                 },
                 icon: const Icon(Icons.map),
                 label: const Text('View on Map'),

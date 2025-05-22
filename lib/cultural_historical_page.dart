@@ -214,13 +214,11 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
               style:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-
             const SizedBox(height: 10),
             Text(
               extendedDescription,
               style: const TextStyle(fontSize: 16),
             ),
-
             const SizedBox(height: 25),
             Center(
               child: ElevatedButton.icon(

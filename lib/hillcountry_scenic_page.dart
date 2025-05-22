@@ -188,8 +188,6 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
             onPressed: toggleLike,
           )
         ],
-
-
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
