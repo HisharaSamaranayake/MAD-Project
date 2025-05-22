@@ -8,8 +8,6 @@ class SnacksScreen extends StatelessWidget {
     {'name': 'Casava Chips', 'image': 'assets/casava_chips.jpg'},
   ];
 
-  SnacksScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +73,7 @@ class SnacksScreen extends StatelessWidget {
 class SnacksDetailScreen extends StatelessWidget {
   final Map<String, String> snack;
 
-  SnacksDetailScreen({super.key, required this.snack});
+  SnacksDetailScreen({required this.snack});
 
   final Map<String, String> snackDescriptions = {
     'Mixture': '''Mixture is a crunchy, spicy snack mix combining various fried ingredients. Highlights include:
@@ -140,7 +138,7 @@ class SnacksDetailScreen extends StatelessWidget {
 class SnacksMapScreen extends StatelessWidget {
   final String snackName;
 
-  const SnacksMapScreen({super.key, required this.snackName});
+  SnacksMapScreen({required this.snackName});
 
   @override
   Widget build(BuildContext context) {
