@@ -189,6 +189,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
           )
         ],
 
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
