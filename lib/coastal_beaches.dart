@@ -228,6 +228,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Map feature coming soon!')),
                   );
+
                 },
                 icon: const Icon(Icons.map),
                 label: const Text('View on Map'),

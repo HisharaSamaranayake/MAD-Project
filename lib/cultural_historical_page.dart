@@ -219,6 +219,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
               extendedDescription,
               style: const TextStyle(fontSize: 16),
             ),
+
             const SizedBox(height: 25),
             Center(
               child: ElevatedButton.icon(

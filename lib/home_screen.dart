@@ -42,12 +42,12 @@ class HomeScreen extends StatelessWidget {
         leading: Builder(
           builder:
               (BuildContext context) => IconButton(
-                icon: const Icon(Icons.menu, color: Colors.black),
-                iconSize: 36, // <-- Make the icon larger here (default is 24)
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              ),
+            icon: const Icon(Icons.menu, color: Colors.black),
+            iconSize: 36, // <-- Make the icon larger here (default is 24)
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
       ),
       drawer: Drawer(
@@ -63,12 +63,12 @@ class HomeScreen extends StatelessWidget {
             _buildDrawerItem(
               Icons.home,
               'Explore SL',
-              () => Navigator.pop(context),
+                  () => Navigator.pop(context),
             ),
             _buildDrawerItem(
               Icons.info,
               'Seasonal Experience',
-              () => Navigator.pushNamed(context, '/season'),
+                  () => Navigator.pushNamed(context, '/season'),
             ),
             _buildDrawerItem(
               Icons.settings,
@@ -79,17 +79,17 @@ class HomeScreen extends StatelessWidget {
             _buildDrawerItem(
               Icons.note_add,
               'Travel Note',
-              () => Navigator.pushNamed(context, '/travelnote'),
+                  () => Navigator.pushNamed(context, '/travelnote'),
             ),
             _buildDrawerItem(
               Icons.restaurant,
               'Foods',
-              () => Navigator.pushNamed(context, '/food'),
+                  () => Navigator.pushNamed(context, '/food'),
             ),
             _buildDrawerItem(
               Icons.contacts,
               'Emergency Contacts',
-              () => Navigator.pushNamed(context, '/emergency'),
+                  () => Navigator.pushNamed(context, '/emergency'),
             ),
             _buildDrawerItem(
               Icons.contact_mail,
@@ -104,12 +104,12 @@ class HomeScreen extends StatelessWidget {
             _buildDrawerItem(
               Icons.person,
               'Profile',
-              () => Navigator.pushNamed(context, '/profile'),
+                  () => Navigator.pushNamed(context, '/profile'),
             ),
             _buildDrawerItem(
               Icons.settings,
               'Settings',
-              () => Navigator.pushNamed(context, '/setting'),
+                  () => Navigator.pushNamed(context, '/setting'),
             ),
           ],
         ),

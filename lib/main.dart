@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
+import 'made_in_sl_category.dart';
+import 'seasonal_experience_page.dart';
+import 'cultural_safety.dart';
+import 'currency_exchange.dart';
+import 'travel_note.dart';
 import 'coastal_beaches.dart';
 import 'cultural_historical_page.dart';
 import 'hillcountry_scenic_page.dart';
@@ -12,7 +17,8 @@ import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
-import 'nature_wildlife_page.dart'; 
+import 'nature_wildlife_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure proper initialization before Firebase setup
@@ -43,14 +49,24 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const WelcomeScreen());
           case '/home':
             return MaterialPageRoute(builder: (_) => const HomeScreen());
+          case '/madeinsl':
+            return MaterialPageRoute(builder: (_) =>  MadeInSriLankaScreen());
           case '/food':
             return MaterialPageRoute(builder: (_) => const FoodCategoryScreen());
+          case '/season':
+            return MaterialPageRoute(builder: (_) => SeasonalExperienceScreen());
           case '/profile':
             return MaterialPageRoute(builder: (_) => const MyProfilePage());
           case '/emergency':
             return MaterialPageRoute(builder: (_) => const EmergencyScreen());
           case '/setting':
             return MaterialPageRoute(builder: (_) => const SettingsPage());
+          case '/travelnote':
+            return MaterialPageRoute(builder: (_) => const TravelNotePage());
+          case '/cultural_safety':
+            return MaterialPageRoute(builder: (_) => const CulturalSafetyPage());
+          case '/currency_exchange':
+            return MaterialPageRoute(builder: (_) => const CurrencyExchangePage());
           case '/beach':
             return MaterialPageRoute(builder: (_) => const CoastalBeachesPage());
           case '/culture':
@@ -60,7 +76,7 @@ class MyApp extends StatelessWidget {
           case '/nature':
             return MaterialPageRoute(builder: (_) => const NatureWildlifePage());
           default:
-            // Handle unknown routes or show error page
+          // Handle unknown routes or show error page
             return MaterialPageRoute(builder: (_) => const SplashScreen()); // Default route
         }
       },
