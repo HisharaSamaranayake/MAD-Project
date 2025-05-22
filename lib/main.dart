@@ -18,6 +18,10 @@ import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
 import 'nature_wildlife_page.dart';
+import 'hotel_booking_page.dart'; 
+import 'travel_screen.dart';
+import 'vehicle_selection_screen.dart';
+import 'ride_confirmation_screen.dart';
 
 
 void main() async {
