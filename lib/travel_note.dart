@@ -254,6 +254,7 @@ class _TravelNotePageState extends State<TravelNotePage> {
                 itemBuilder: (context, index) {
                   final note = _notes[index];
 
+
                   String? parkTitle;
                   String? category; // To track category for navigation
 
