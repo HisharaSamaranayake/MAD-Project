@@ -277,6 +277,7 @@ class _TravelNotePageState extends State<TravelNotePage> {
                     }
                   }
 
+
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
