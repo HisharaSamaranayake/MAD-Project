@@ -76,7 +76,6 @@ class TropicalFruitsScreen extends StatelessWidget {
 class TropicalFruitDetailScreen extends StatelessWidget {
   final Map<String, String> fruit;
 
-  TropicalFruitDetailScreen({required this.fruit});
 
   final Map<String, String> fruitDescriptions = {
     'Mango': '''
@@ -190,7 +189,6 @@ King Coconut is a variety of coconut native to Sri Lanka, known for its refreshi
 class FruitMapScreen extends StatelessWidget {
   final String fruitName;
 
-  FruitMapScreen({required this.fruitName});
 
   @override
   Widget build(BuildContext context) {

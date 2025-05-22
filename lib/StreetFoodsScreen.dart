@@ -76,7 +76,6 @@ class StreetFoodsScreen extends StatelessWidget {
 class StreetFoodDetailScreen extends StatelessWidget {
   final Map<String, String> food;
 
-  StreetFoodDetailScreen({required this.food});
 
   final Map<String, String> foodDescriptions = {
     'Egg Roti':
@@ -164,7 +163,6 @@ class StreetFoodDetailScreen extends StatelessWidget {
 class TraditionalFoodMapScreen extends StatelessWidget {
   final String foodName;
 
-  TraditionalFoodMapScreen({required this.foodName});
 
   @override
   Widget build(BuildContext context) {

@@ -27,8 +27,6 @@ class SpicesScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      SpiceDetailScreen(spice: spiceItems[index]),
                 ),
               );
             },
@@ -42,8 +40,6 @@ class SpicesScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(spiceItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -56,8 +52,6 @@ class SpicesScreen extends StatelessWidget {
                     child: Text(
                       spiceItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -73,33 +67,12 @@ class SpicesScreen extends StatelessWidget {
 class SpiceDetailScreen extends StatelessWidget {
   final Map<String, String> spice;
 
-  SpiceDetailScreen({required this.spice});
 
   final Map<String, String> spiceDescriptions = {
-    'Cinnamon': '''Sri Lankan cinnamon (Ceylon cinnamon) is known as the world's finest. Features:
 
-• Thin, smooth bark with a sweet aroma  
-• Common in desserts, curries, and teas  
-• Exported globally  
-• Grown mainly in the southern coast''',
-    'Cardamom': '''Cardamom is a fragrant spice used in sweet and savory dishes. Characteristics:
 
-• Small green pods with tiny black seeds  
-• Strong aroma and slightly sweet taste  
-• Used in curries, desserts, and herbal drinks  
-• Grown in the hill country''',
-    'Cloves': '''Cloves are dried flower buds with a strong, pungent flavor. Highlights:
 
-• Used in rice dishes and spice blends  
-• Contains essential oils with medicinal value  
-• Grown in moist, tropical climates  
-• Key ingredient in Sri Lankan curry powder''',
-    'Black Pepper': '''Black pepper is a bold spice used for seasoning. Key aspects:
 
-• Grown widely in Sri Lanka's wet zones  
-• Sharp, hot flavor used in nearly every dish  
-• Integral to spice blends and pickles  
-• Known as the "King of Spices"''',
   };
 
   @override
@@ -108,8 +81,6 @@ class SpiceDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(spice['name']!)),
       body: Column(
         children: [
-          Image.asset(spice['image']!,
-              width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -122,8 +93,6 @@ class SpiceDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      SpiceMapScreen(spiceName: spice['name']!),
                 ),
               );
             },
@@ -138,7 +107,6 @@ class SpiceDetailScreen extends StatelessWidget {
 class SpiceMapScreen extends StatelessWidget {
   final String spiceName;
 
-  SpiceMapScreen({required this.spiceName});
 
   @override
   Widget build(BuildContext context) {

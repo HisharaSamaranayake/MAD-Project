@@ -73,7 +73,6 @@ class SnacksScreen extends StatelessWidget {
 class SnacksDetailScreen extends StatelessWidget {
   final Map<String, String> snack;
 
-  SnacksDetailScreen({required this.snack});
 
   final Map<String, String> snackDescriptions = {
     'Mixture': '''Mixture is a crunchy, spicy snack mix combining various fried ingredients. Highlights include:
@@ -138,7 +137,6 @@ class SnacksDetailScreen extends StatelessWidget {
 class SnacksMapScreen extends StatelessWidget {
   final String snackName;
 
-  SnacksMapScreen({required this.snackName});
 
   @override
   Widget build(BuildContext context) {

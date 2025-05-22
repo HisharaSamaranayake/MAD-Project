@@ -1,4 +1,4 @@
- import 'dart:ui'; // For ImageFilter.blur
+import 'dart:ui'; // For ImageFilter.blur
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -53,3 +53,4 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
+

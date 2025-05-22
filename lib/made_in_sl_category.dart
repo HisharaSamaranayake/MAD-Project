@@ -21,7 +21,6 @@ class MadeInSriLankaScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Made in Sri Lanka'),
-        backgroundColor: Colors.lightBlue.shade50,
       ),
       body: GridView.builder(
         padding: EdgeInsets.all(16.0),
@@ -37,17 +36,11 @@ class MadeInSriLankaScreen extends StatelessWidget {
             onTap: () {
               String category = sriLankaCategories[index]['title']!;
               if (category == 'Handicrafts') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => HandicraftsScreen()));
               } else if (category == 'Spices') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => SpicesScreen()));
               } else if (category == 'Ceylon Tea') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => CeylonTeaScreen()));
               } else if (category == 'Gems & Jewelry') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => GemsJewelryScreen()));
               } else if (category == 'Textiles & Batik') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => TextilesScreen()));
               } else if (category == 'Ayurvedic Products') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => AyurvedicProductsScreen()));
               }
             },
             child: Card(
@@ -60,9 +53,7 @@ class MadeInSriLankaScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
-                          image: AssetImage(sriLankaCategories[index]['image']!),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -73,7 +64,6 @@ class MadeInSriLankaScreen extends StatelessWidget {
                     child: Text(
                       sriLankaCategories[index]['title']!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],

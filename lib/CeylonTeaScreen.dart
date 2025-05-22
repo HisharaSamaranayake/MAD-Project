@@ -27,8 +27,6 @@ class CeylonTeaScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      TeaDetailScreen(tea: teaItems[index]),
                 ),
               );
             },
@@ -42,8 +40,6 @@ class CeylonTeaScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(teaItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -56,8 +52,6 @@ class CeylonTeaScreen extends StatelessWidget {
                     child: Text(
                       teaItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -73,33 +67,12 @@ class CeylonTeaScreen extends StatelessWidget {
 class TeaDetailScreen extends StatelessWidget {
   final Map<String, String> tea;
 
-  TeaDetailScreen({required this.tea});
 
   final Map<String, String> teaDescriptions = {
-    'Black Tea': '''Ceylon Black Tea is the most popular tea in Sri Lanka. Features include:
 
-• Rich in color and strong in flavor  
-• Grown mainly in Uva, Dimbula, and Nuwara Eliya regions  
-• Often enjoyed with milk or sugar  
-• Used in breakfast blends worldwide''',
-    'Green Tea': '''Ceylon Green Tea is known for its delicate taste and health benefits:
 
-• Light and refreshing flavor  
-• Minimal oxidation during processing  
-• Rich in antioxidants  
-• Commonly consumed for weight loss and wellness''',
-    'White Tea': '''Ceylon White Tea is the rarest and most prized variety. It is:
 
-• Made from young tea buds  
-• Extremely light and subtle in taste  
-• Hand-picked and sun-dried  
-• Grown mostly in Nuwara Eliya''',
-    'Herbal Infusions': '''These are caffeine-free blends made with herbs and spices:
 
-• Includes chamomile, lemongrass, and cinnamon blends  
-• Known for calming and digestive benefits  
-• Naturally sweet and aromatic  
-• Often served in wellness retreats''',
   };
 
   @override
@@ -108,8 +81,6 @@ class TeaDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(tea['name']!)),
       body: Column(
         children: [
-          Image.asset(tea['image']!,
-              width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -122,8 +93,6 @@ class TeaDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      TeaMapScreen(teaName: tea['name']!),
                 ),
               );
             },
@@ -138,7 +107,6 @@ class TeaDetailScreen extends StatelessWidget {
 class TeaMapScreen extends StatelessWidget {
   final String teaName;
 
-  TeaMapScreen({required this.teaName});
 
   @override
   Widget build(BuildContext context) {

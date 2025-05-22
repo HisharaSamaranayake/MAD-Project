@@ -27,9 +27,6 @@ class AyurvedicProductsScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AyurvedicDetailScreen(
-                    product: ayurvedicItems[index],
-                  ),
                 ),
               );
             },
@@ -43,8 +40,6 @@ class AyurvedicProductsScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(ayurvedicItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -57,8 +52,6 @@ class AyurvedicProductsScreen extends StatelessWidget {
                     child: Text(
                       ayurvedicItems[index]['name']!,
                       textAlign: TextAlign.center,
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -74,33 +67,14 @@ class AyurvedicProductsScreen extends StatelessWidget {
 class AyurvedicDetailScreen extends StatelessWidget {
   final Map<String, String> product;
 
-  AyurvedicDetailScreen({required this.product});
 
   final Map<String, String> productDescriptions = {
-    'Herbal Oils': '''Herbal oils are used in traditional treatments and massages:
 
-• Made from natural herbs and essential oils  
-• Used for pain relief, hair care, and relaxation  
-• Common in Ayurvedic therapies and spas  
-• Found in wellness centers and herbal shops''',
     'Ayurvedic Pills': '''Ayurvedic pills help maintain balance in the body:
 
-• Made with herbal extracts  
-• Used to treat common ailments  
-• No harmful chemicals  
-• Must be taken under Ayurvedic doctor guidance''',
     'Balms & Creams': '''Topical products used for muscle and joint pain relief:
 
-• Contain herbal ingredients like eucalyptus and camphor  
-• Provide warming or cooling sensation  
-• Effective for colds, headaches, and sprains  
-• Widely used in homes and Ayurveda centers''',
-    'Herbal Teas': '''Herbal teas are infused with natural ingredients for health:
 
-• Aid digestion, relaxation, and immunity  
-• Made from herbs like ginger, coriander, and cinnamon  
-• Caffeine-free and refreshing  
-• Available in organic shops and Ayurveda stores''',
   };
 
   @override
@@ -109,8 +83,6 @@ class AyurvedicDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(product['name']!)),
       body: Column(
         children: [
-          Image.asset(product['image']!,
-              width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -123,7 +95,6 @@ class AyurvedicDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
                       AyurvedicMapScreen(productName: product['name']!),
                 ),
               );
@@ -139,7 +110,6 @@ class AyurvedicDetailScreen extends StatelessWidget {
 class AyurvedicMapScreen extends StatelessWidget {
   final String productName;
 
-  AyurvedicMapScreen({required this.productName});
 
   @override
   Widget build(BuildContext context) {
