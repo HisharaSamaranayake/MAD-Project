@@ -179,8 +179,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
     final place = widget.place;
     final weather = widget.weather;
 
-    final extendedDescription = place['description']! +
-        '\n\nThis beautiful beach offers a perfect blend of relaxation and adventure. Enjoy sunbathing, swimming, and exploring nearby local attractions. Always respect the natural environment and local customs.';
+    final extendedDescription = '${place['description']!}\n\nThis beautiful beach offers a perfect blend of relaxation and adventure. Enjoy sunbathing, swimming, and exploring nearby local attractions. Always respect the natural environment and local customs.';
 
     return Scaffold(
       appBar: AppBar(

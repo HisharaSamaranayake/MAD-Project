@@ -10,8 +10,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:country_picker/country_picker.dart';
 import 'login_screen.dart';
 
-// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart'; // Facebook login (commented for now)
-
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -121,10 +119,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _showErrorDialog("Google sign-in failed");
     }
   }
-
-  // Future<void> _loginWithFacebook() async {
-  //   // Facebook login functionality can be added here later
-  // }
 
   void _showErrorDialog(String msg) {
     showDialog(
@@ -297,12 +291,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // _socialCircle(
-                      //   Icons.facebook,
-                      //   Colors.white,
-                      //   Colors.blue,
-                      //   _loginWithFacebook,
-                      // ),
+                      _socialCircle(
+                        FontAwesomeIcons.facebookF,
+                        Colors.white,
+                        Color(0xFF1877F2),
+                        () {
+                          // TODO: Implement Facebook login later
+                          // Currently, only the icon is shown
+                        },
+                      ),
                       _socialCircle(
                         FontAwesomeIcons.google,
                         Colors.white,
@@ -313,7 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Icons.apple,
                         Colors.white,
                         Colors.black,
-                        () {}, // Apple login not implemented
+                        () {}, // Placeholder for Apple login
                       ),
                     ],
                   ),
@@ -344,6 +341,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         border: Border.all(color: Colors.grey),
       );
 }
+
 
 
 

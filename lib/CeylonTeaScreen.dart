@@ -8,6 +8,8 @@ class CeylonTeaScreen extends StatelessWidget {
     {'name': 'Herbal Infusions', 'image': 'assets/herbal_tea.jpg'},
   ];
 
+  CeylonTeaScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +29,7 @@ class CeylonTeaScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  builder: (_) => TeaDetailScreen(tea: teaItems[index]),
                 ),
               );
             },
@@ -67,12 +70,13 @@ class CeylonTeaScreen extends StatelessWidget {
 class TeaDetailScreen extends StatelessWidget {
   final Map<String, String> tea;
 
+  TeaDetailScreen({super.key, required this.tea});
 
   final Map<String, String> teaDescriptions = {
-
-
-
-
+    'Black Tea': 'Bold and rich, the traditional favorite of Sri Lanka.',
+    'Green Tea': 'Delicate and refreshing with a light grassy flavor.',
+    'White Tea': 'Smooth and subtle with the least oxidation.',
+    'Herbal Infusions': 'Caffeine-free blends using native herbs and spices.',
   };
 
   @override
@@ -80,24 +84,31 @@ class TeaDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(tea['name']!)),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              teaDescriptions[tea['name']]!,
-              style: TextStyle(fontSize: 16, height: 1.5),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                teaDescriptions[tea['name']] ?? 'No description available.',
+                style: TextStyle(fontSize: 16, height: 1.5),
+              ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                ),
-              );
-            },
-            child: Text('Find Tea Estates'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => TeaMapScreen(teaName: tea['name']!),
+                  ),
+                );
+              },
+              child: Text('Find Tea Estates'),
+            ),
           ),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -107,6 +118,7 @@ class TeaDetailScreen extends StatelessWidget {
 class TeaMapScreen extends StatelessWidget {
   final String teaName;
 
+  const TeaMapScreen({super.key, required this.teaName});
 
   @override
   Widget build(BuildContext context) {
@@ -125,4 +137,3 @@ class TeaMapScreen extends StatelessWidget {
     );
   }
 }
-// TODO Implement this library.

@@ -173,8 +173,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
     final place = widget.place;
     final weather = widget.weather;
 
-    final extendedDescription = place['description']! +
-        '\n\nThis scenic place offers beautiful views, local culture, and great spots for photography and hiking. Be sure to check weather conditions before visiting and respect nature and local customs.';
+    final extendedDescription = '${place['description']!}\n\nThis scenic place offers beautiful views, local culture, and great spots for photography and hiking. Be sure to check weather conditions before visiting and respect nature and local customs.';
 
     return Scaffold(
       appBar: AppBar(

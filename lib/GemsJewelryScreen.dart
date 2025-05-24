@@ -7,6 +7,8 @@ class GemsJewelryScreen extends StatelessWidget {
     {'name': 'Moonstone', 'image': 'assets/moonstone.jpg'},
   ];
 
+  GemsJewelryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +28,8 @@ class GemsJewelryScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  builder: (context) =>
+                      GemDetailScreen(gem: gemItems[index]),
                 ),
               );
             },
@@ -39,6 +43,7 @@ class GemsJewelryScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(gemItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -51,6 +56,7 @@ class GemsJewelryScreen extends StatelessWidget {
                     child: Text(
                       gemItems[index]['name']!,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -66,15 +72,29 @@ class GemsJewelryScreen extends StatelessWidget {
 class GemDetailScreen extends StatelessWidget {
   final Map<String, String> gem;
 
+  GemDetailScreen({super.key, required this.gem});
 
   final Map<String, String> gemDescriptions = {
     'Blue Sapphire': '''Known as the "Gem of Heaven", Ceylon Blue Sapphire is:
+• Deep royal blue in color  
+• Found mainly in the Ratnapura region  
+• Believed to bring wisdom and good fortune  
+• Commonly used in high-end jewelry  
+• Sri Lanka is one of the top sources globally''',
 
     'Ruby': '''Ceylon Rubies are radiant red gemstones that signify passion:
-
+• Deep red to pinkish-red in color  
+• Symbol of love, energy, and power  
+• Found in the Elahera and Balangoda areas  
+• Often set in gold or silver jewelry  
+• Valued for both beauty and rarity''',
 
     'Moonstone': '''Sri Lankan Moonstone is admired for its glowing sheen:
-
+• Exhibits a blue or white shimmer (adularescence)  
+• Primarily found in Meetiyagoda  
+• Known for calming and balancing energies  
+• Used in both modern and traditional designs  
+• A gemstone of emotional clarity''',
   };
 
   @override
@@ -83,10 +103,11 @@ class GemDetailScreen extends StatelessWidget {
       appBar: AppBar(title: Text(gem['name']!)),
       body: Column(
         children: [
+          Image.asset(gem['image']!, width: double.infinity, height: 250, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              gemDescriptions[gem['name']]!,
+              gemDescriptions[gem['name']] ?? 'No description available.',
               style: TextStyle(fontSize: 16, height: 1.5),
             ),
           ),
@@ -95,6 +116,7 @@ class GemDetailScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  builder: (context) => GemMapScreen(gemName: gem['name']!),
                 ),
               );
             },
@@ -109,6 +131,7 @@ class GemDetailScreen extends StatelessWidget {
 class GemMapScreen extends StatelessWidget {
   final String gemName;
 
+  const GemMapScreen({super.key, required this.gemName});
 
   @override
   Widget build(BuildContext context) {
@@ -127,4 +150,4 @@ class GemMapScreen extends StatelessWidget {
     );
   }
 }
-// TODO Implement this library.
+

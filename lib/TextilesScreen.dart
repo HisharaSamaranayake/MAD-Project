@@ -8,6 +8,8 @@ class TextilesScreen extends StatelessWidget {
     {'name': 'Sarong', 'image': 'assets/sarong.jpg'},
   ];
 
+  TextilesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class TextilesScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                      TextileDetailScreen(textile: textileItems[index]),
+                  builder: (context) => TextileDetailScreen(textile: textileItems[index]),
                 ),
               );
             },
@@ -41,6 +43,7 @@ class TextilesScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(textileItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -53,6 +56,7 @@ class TextilesScreen extends StatelessWidget {
                     child: Text(
                       textileItems[index]['name']!,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
                   ),
                 ],
@@ -68,37 +72,45 @@ class TextilesScreen extends StatelessWidget {
 class TextileDetailScreen extends StatelessWidget {
   final Map<String, String> textile;
 
+  TextileDetailScreen({super.key, required this.textile});
 
   final Map<String, String> textileDescriptions = {
-
-
-
-
+    'Batik': 'Batik is a traditional Sri Lankan textile art using wax-resist dyeing techniques.',
+    'Handloom': 'Handloom textiles are made on traditional looms and showcase vibrant Sri Lankan colors.',
+    'Kandyan Saree': 'A traditional dress worn by Kandyan women, rich in culture and elegance.',
+    'Sarong': 'A sarong is a versatile garment worn by both men and women, especially in tropical climates.',
   };
 
   @override
   Widget build(BuildContext context) {
+    String textileName = textile['name'] ?? 'Textile';
+    String description = textileDescriptions[textileName] ?? 'No description available.';
+
     return Scaffold(
-      appBar: AppBar(title: Text(textile['name']!)),
+      appBar: AppBar(title: Text(textileName)),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Image.asset(textile['image']!, width: double.infinity, height: 200, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              textileDescriptions[textile['name']]!,
+              description,
               style: TextStyle(fontSize: 16, height: 1.5),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                      TextileMapScreen(textileName: textile['name']!),
-                ),
-              );
-            },
-            child: Text('Find Shops Nearby'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TextileMapScreen(textileName: textileName),
+                  ),
+                );
+              },
+              child: Text('Find Shops Nearby'),
+            ),
           ),
         ],
       ),
@@ -109,6 +121,7 @@ class TextileDetailScreen extends StatelessWidget {
 class TextileMapScreen extends StatelessWidget {
   final String textileName;
 
+  const TextileMapScreen({super.key, required this.textileName});
 
   @override
   Widget build(BuildContext context) {
@@ -127,4 +140,3 @@ class TextileMapScreen extends StatelessWidget {
     );
   }
 }
-// TODO Implement this library.

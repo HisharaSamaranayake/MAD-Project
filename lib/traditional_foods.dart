@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'nearby_places_screen.dart'; // Import the new screen here
 
 class TraditionalFoodsScreen extends StatelessWidget {
-  final List<Map<String, String>> traditionalFoods = const[
+  final List<Map<String, String>> traditionalFoods = const [
     {'name': 'Milk Rice', 'image': 'assets/kiribath.jpeg'},
     {'name': 'String Hoppers', 'image': 'assets/string_hoppers.jpeg'},
     {'name': 'Hoppers', 'image': 'assets/hoppers.jpg'},
@@ -15,10 +16,10 @@ class TraditionalFoodsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Traditional Foods')),
+      appBar: AppBar(title: const Text('Traditional Foods')),
       body: GridView.builder(
-        padding: EdgeInsets.all(16.0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
@@ -26,14 +27,13 @@ class TraditionalFoodsScreen extends StatelessWidget {
         ),
         itemCount: traditionalFoods.length,
         itemBuilder: (context, index) {
+          final food = traditionalFoods[index];
           return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TraditionalFoodDetailScreen(
-                    food: traditionalFoods[index],
-                  ),
+                  builder: (context) => TraditionalFoodDetailScreen(food: food),
                 ),
               );
             },
@@ -47,9 +47,10 @@ class TraditionalFoodsScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                        borderRadius:
+                            const BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
-                          image: AssetImage(traditionalFoods[index]['image'] ?? ''),
+                          image: AssetImage(food['image'] ?? ''),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -58,9 +59,10 @@ class TraditionalFoodsScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
-                      traditionalFoods[index]['name'] ?? '',
+                      food['name'] ?? '',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ],
@@ -158,7 +160,8 @@ Rich in flavor and history.
   Widget build(BuildContext context) {
     final String foodName = food['name'] ?? '';
     final String foodImage = food['image'] ?? '';
-    final String description = foodDescriptions[foodName] ?? 'No description available.';
+    final String description =
+        foodDescriptions[foodName] ?? 'No description available.';
 
     return Scaffold(
       appBar: AppBar(title: Text(foodName)),
@@ -175,26 +178,26 @@ Rich in flavor and history.
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 description,
-                style: TextStyle(fontSize: 16, height: 1.5),
+                style: const TextStyle(fontSize: 16, height: 1.5),
               ),
             ),
             ElevatedButton(
               onPressed: () {
+                // Navigate to the combined Nearby Places screen with map & list
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        TraditionalFoodMapScreen(foodName: foodName),
+                    builder: (context) => NearbyPlacesScreen(foodName: foodName),
                   ),
                 );
               },
-              child: Text('Find Nearby Places'),
+              child: const Text('Find Nearby Places'),
             ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Set to 0 if this is the home screen
+        currentIndex: 0, // Adjust as needed
         onTap: (index) {
           switch (index) {
             case 0:
@@ -210,37 +213,12 @@ Rich in flavor and history.
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Emergrncy'),
+          BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Emergency'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
-
     );
   }
 }
 
-class TraditionalFoodMapScreen extends StatelessWidget {
-  final String foodName;
 
-  const TraditionalFoodMapScreen({super.key, required this.foodName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Nearby Places for $foodName')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.map, size: 100, color: Colors.blue),
-            SizedBox(height: 20),
-            Text(
-              'Map will be displayed here.',
-              style: TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

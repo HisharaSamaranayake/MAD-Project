@@ -24,6 +24,8 @@ class VehicleSelectionScreen extends StatelessWidget {
     },
   ];
 
+  VehicleSelectionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

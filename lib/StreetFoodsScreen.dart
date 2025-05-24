@@ -10,6 +10,8 @@ class StreetFoodsScreen extends StatelessWidget {
     {'name': 'Drumstick', 'image': 'assets/drumstick.jpg'}, // New item
   ];
 
+  StreetFoodsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +77,8 @@ class StreetFoodsScreen extends StatelessWidget {
 // Street Food Detail Screen
 class StreetFoodDetailScreen extends StatelessWidget {
   final Map<String, String> food;
+
+  StreetFoodDetailScreen({super.key, required this.food});
 
 
   final Map<String, String> foodDescriptions = {
@@ -162,6 +166,8 @@ class StreetFoodDetailScreen extends StatelessWidget {
 // Traditional Food Map Screen (reused for street food too)
 class TraditionalFoodMapScreen extends StatelessWidget {
   final String foodName;
+
+  const TraditionalFoodMapScreen({super.key, required this.foodName});
 
 
   @override

@@ -1,32 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase package
-import 'made_in_sl_category.dart';
-import 'seasonal_experience_page.dart';
-import 'cultural_safety.dart';
-import 'currency_exchange.dart';
-import 'travel_note.dart';
-import 'coastal_beaches.dart';
-import 'cultural_historical_page.dart';
-import 'hillcountry_scenic_page.dart';
-import 'welcome_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+// Screens
+import 'Splash_Screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
-import 'Splash_Screen.dart';
+import 'welcome_screen.dart';
 import 'home_screen.dart';
 import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
 import 'setting.dart';
+import 'coastal_beaches.dart';
+import 'cultural_historical_page.dart';
+import 'hillcountry_scenic_page.dart';
 import 'nature_wildlife_page.dart';
-import 'hotel_booking_page.dart'; 
-import 'travel_screen.dart';
-import 'vehicle_selection_screen.dart';
-import 'ride_confirmation_screen.dart';
+import 'map_screen.dart';
+import 'made_in_sl_category.dart';
+import 'seasonal_experience_page.dart';
+import 'cultural_safety.dart';
+import 'currency_exchange.dart';
+import 'travel_note.dart';
 
+// New screens for Travel and Stay
+import 'travel_screen.dart';
+import 'hotel_booking_page.dart';
+
+// Import your new YalaMapScreen file
+import 'yala_map_screen.dart';
+
+// Import the NearbyPlacesScreen
+import 'nearby_places_screen.dart'; // <-- Add this import
+
+// Background handler for Firebase Messaging
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message: ${message.messageId}');
+}
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure proper initialization before Firebase setup
-  await Firebase.initializeApp(); // Initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(const MyApp());
 }
 
@@ -39,51 +57,57 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Wander Lanka',
       theme: ThemeData(primarySwatch: Colors.teal),
-      initialRoute: '/splash', // Start with SplashScreen
-      onGenerateRoute: (settings) {
-        // Handle any dynamic routes or missing routes
-        switch (settings.name) {
-          case '/splash':
-            return MaterialPageRoute(builder: (_) => const SplashScreen());
-          case '/login':
-            return MaterialPageRoute(builder: (_) => const LoginScreen());
-          case '/register':
-            return MaterialPageRoute(builder: (_) => const RegisterScreen());
-          case '/welcome':
-            return MaterialPageRoute(builder: (_) => const WelcomeScreen());
-          case '/home':
-            return MaterialPageRoute(builder: (_) => const HomeScreen());
-          case '/madeinsl':
-            return MaterialPageRoute(builder: (_) =>  MadeInSriLankaScreen());
-          case '/food':
-            return MaterialPageRoute(builder: (_) => const FoodCategoryScreen());
-          case '/season':
-            return MaterialPageRoute(builder: (_) => SeasonalExperienceScreen());
-          case '/profile':
-            return MaterialPageRoute(builder: (_) => const MyProfilePage());
-          case '/emergency':
-            return MaterialPageRoute(builder: (_) => const EmergencyScreen());
-          case '/setting':
-            return MaterialPageRoute(builder: (_) => const SettingsPage());
-          case '/travelnote':
-            return MaterialPageRoute(builder: (_) => const TravelNotePage());
-          case '/cultural_safety':
-            return MaterialPageRoute(builder: (_) => const CulturalSafetyPage());
-          case '/currency_exchange':
-            return MaterialPageRoute(builder: (_) => const CurrencyExchangePage());
-          case '/beach':
-            return MaterialPageRoute(builder: (_) => const CoastalBeachesPage());
-          case '/culture':
-            return MaterialPageRoute(builder: (_) => const CulturalHistoricalPage());
-          case '/hillcountry':
-            return MaterialPageRoute(builder: (_) => const HillCountryScenicPage());
-          case '/nature':
-            return MaterialPageRoute(builder: (_) => const NatureWildlifePage());
-          default:
-          // Handle unknown routes or show error page
-            return MaterialPageRoute(builder: (_) => const SplashScreen()); // Default route
-        }
+      initialRoute: '/splash',
+
+      // Static routes
+      routes: {
+        '/splash': (context) => const SplashScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/food': (context) => const FoodCategoryScreen(),
+        '/profile': (context) => const MyProfilePage(),
+        '/emergency': (context) => const EmergencyScreen(),
+        '/setting': (context) => const SettingsPage(),
+        '/beach': (context) => const CoastalBeachesPage(),
+        '/culture': (context) => const CulturalHistoricalPage(),
+        '/hillcountry': (context) => const HillCountryScenicPage(),
+        '/nature': (context) => const NatureWildlifePage(),
+        '/offlinemap': (context) => const MapScreen(),
+        '/madeinsl': (context) => MadeInSriLankaScreen(),
+        '/season': (context) => const SeasonalExperienceScreen(),
+        '/travelnote': (context) => const TravelNotePage(),
+        '/cultural_safety': (context) => const CulturalSafetyPage(),
+        '/currency_exchange': (context) => const CurrencyExchangePage(),
+
+        // New routes for Travel and Stay
+        '/travel': (context) => const TravelScreen(),
+        '/stay': (context) => const HotelBookingPage(),
+
+        // Other new routes
+        '/yalamap': (context) => const YalaMapScreen(),
+        '/nearbyplaces': (context) => const NearbyPlacesScreen(foodName: ''), // default foodName empty; pass real on navigation
       },
+
+      // Handle unknown routes
+      onUnknownRoute: (settings) => MaterialPageRoute(
+        builder: (_) => const SplashScreen(),
+      ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
