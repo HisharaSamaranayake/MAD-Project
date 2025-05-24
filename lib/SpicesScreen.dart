@@ -8,6 +8,8 @@ class SpicesScreen extends StatelessWidget {
     {'name': 'Black Pepper', 'image': 'assets/black_pepper.jpg'},
   ];
 
+  SpicesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +29,7 @@ class SpicesScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  builder: (context) => SpiceDetailScreen(spice: spiceItems[index]),
                 ),
               );
             },
@@ -40,6 +43,7 @@ class SpicesScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
                           image: AssetImage(spiceItems[index]['image']!),
                           fit: BoxFit.cover,
@@ -52,6 +56,7 @@ class SpicesScreen extends StatelessWidget {
                     child: Text(
                       spiceItems[index]['name']!,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
                   ),
                 ],
@@ -67,36 +72,45 @@ class SpicesScreen extends StatelessWidget {
 class SpiceDetailScreen extends StatelessWidget {
   final Map<String, String> spice;
 
+  SpiceDetailScreen({required this.spice, super.key});
 
   final Map<String, String> spiceDescriptions = {
-
-
-
-
+    'Cinnamon': 'Sri Lanka produces some of the world’s finest cinnamon, known for its sweet flavor and aroma.',
+    'Cardamom': 'Often referred to as the "Queen of Spices", Sri Lankan cardamom is prized for its strong aroma.',
+    'Cloves': 'Used widely in cooking and ayurvedic medicine, cloves from Sri Lanka are rich in oil.',
+    'Black Pepper': 'Sri Lankan black pepper is bold and pungent, perfect for enhancing savory dishes.',
   };
 
   @override
   Widget build(BuildContext context) {
+    String spiceName = spice['name'] ?? 'Spice';
+    String description = spiceDescriptions[spiceName] ?? 'No description available.';
+
     return Scaffold(
-      appBar: AppBar(title: Text(spice['name']!)),
+      appBar: AppBar(title: Text(spiceName)),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Image.asset(spice['image']!, width: double.infinity, height: 200, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              spiceDescriptions[spice['name']]!,
+              description,
               style: TextStyle(fontSize: 16, height: 1.5),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                ),
-              );
-            },
-            child: Text('Find Nearby Places'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SpiceMapScreen(spiceName: spiceName),
+                  ),
+                );
+              },
+              child: Text('Find Nearby Places'),
+            ),
           ),
         ],
       ),
@@ -107,6 +121,7 @@ class SpiceDetailScreen extends StatelessWidget {
 class SpiceMapScreen extends StatelessWidget {
   final String spiceName;
 
+  const SpiceMapScreen({required this.spiceName, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,4 +140,3 @@ class SpiceMapScreen extends StatelessWidget {
     );
   }
 }
-// TODO Implement this library.

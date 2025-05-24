@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'HandicraftsScreen.dart';
+import 'Handicrafts_Screen.dart';
 import 'SpicesScreen.dart';
 import 'CeylonTeaScreen.dart';
 import 'GemsJewelryScreen.dart';
@@ -15,6 +15,8 @@ class MadeInSriLankaScreen extends StatelessWidget {
     {'title': 'Textiles & Batik', 'image': 'assets/textiles.jpg'},
     {'title': 'Ayurvedic Products', 'image': 'assets/ayurveda.jpg'},
   ];
+
+  MadeInSriLankaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +34,40 @@ class MadeInSriLankaScreen extends StatelessWidget {
         ),
         itemCount: sriLankaCategories.length,
         itemBuilder: (context, index) {
+          String category = sriLankaCategories[index]['title']!;
+          String imagePath = sriLankaCategories[index]['image']!;
           return GestureDetector(
             onTap: () {
-              String category = sriLankaCategories[index]['title']!;
               if (category == 'Handicrafts') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HandicraftsScreen()),
+                );
               } else if (category == 'Spices') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SpicesScreen()),
+                );
               } else if (category == 'Ceylon Tea') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CeylonTeaScreen()),
+                );
               } else if (category == 'Gems & Jewelry') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GemsJewelryScreen()),
+                );
               } else if (category == 'Textiles & Batik') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TextilesScreen()),
+                );
               } else if (category == 'Ayurvedic Products') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AyurvedicProductsScreen()),
+                );
               }
             },
             child: Card(
@@ -53,7 +80,9 @@ class MadeInSriLankaScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                         image: DecorationImage(
+                          image: AssetImage(imagePath),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -62,8 +91,9 @@ class MadeInSriLankaScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
-                      sriLankaCategories[index]['title']!,
+                      category,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -75,3 +105,5 @@ class MadeInSriLankaScreen extends StatelessWidget {
     );
   }
 }
+
+

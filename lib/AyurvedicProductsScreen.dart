@@ -8,6 +8,8 @@ class AyurvedicProductsScreen extends StatelessWidget {
     {'name': 'Herbal Teas', 'image': 'assets/herbal_teas.jpg'},
   ];
 
+  AyurvedicProductsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +29,7 @@ class AyurvedicProductsScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  builder: (context) => AyurvedicDetailScreen(product: ayurvedicItems[index]),
                 ),
               );
             },
@@ -67,14 +70,13 @@ class AyurvedicProductsScreen extends StatelessWidget {
 class AyurvedicDetailScreen extends StatelessWidget {
   final Map<String, String> product;
 
+  AyurvedicDetailScreen({required this.product, super.key});
 
   final Map<String, String> productDescriptions = {
-
-    'Ayurvedic Pills': '''Ayurvedic pills help maintain balance in the body:
-
-    'Balms & Creams': '''Topical products used for muscle and joint pain relief:
-
-
+    'Herbal Oils': 'Herbal oils are used for massages and treatments.',
+    'Ayurvedic Pills': 'Ayurvedic pills help maintain balance in the body.',
+    'Balms & Creams': 'Topical products used for muscle and joint pain relief.',
+    'Herbal Teas': 'Herbal teas promote relaxation and wellness.',
   };
 
   @override
@@ -82,25 +84,31 @@ class AyurvedicDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(product['name']!)),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              productDescriptions[product['name']]!,
-              style: TextStyle(fontSize: 16, height: 1.5),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                productDescriptions[product['name']] ?? 'No description available.',
+                style: TextStyle(fontSize: 16, height: 1.5),
+              ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                      AyurvedicMapScreen(productName: product['name']!),
-                ),
-              );
-            },
-            child: Text('Find Nearby Stores'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AyurvedicMapScreen(productName: product['name']!),
+                  ),
+                );
+              },
+              child: Text('Find Nearby Stores'),
+            ),
           ),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -110,6 +118,7 @@ class AyurvedicDetailScreen extends StatelessWidget {
 class AyurvedicMapScreen extends StatelessWidget {
   final String productName;
 
+  const AyurvedicMapScreen({super.key, required this.productName});
 
   @override
   Widget build(BuildContext context) {
@@ -128,4 +137,3 @@ class AyurvedicMapScreen extends StatelessWidget {
     );
   }
 }
-// TODO Implement this library.

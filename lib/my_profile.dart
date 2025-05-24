@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -13,17 +14,16 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePageState extends State<MyProfilePage> {
   final ImagePicker _picker = ImagePicker();
-  late String _profileImagePath = 'assets/profile.jpeg'; // Default image path
-  File? _profileImageFile; // To store the file if the user selects a new image
+  String _profileImagePath = 'assets/profile.jpeg';
+  File? _profileImageFile;
 
-  // Text controllers for user data
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
 
-  String? userId; // You will retrieve this from Firebase authentication
+  String? userId;
 
   @override
   void initState() {
@@ -31,14 +31,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
     _fetchUserProfile();
   }
 
-  // Fetch user profile data from Firestore if the user exists
   Future<void> _fetchUserProfile() async {
-    // Assuming you're getting the userId from FirebaseAuth or from another source
-    // Here we just simulate a userId fetch
-    userId = 'sample_user_id'; // Replace with actual user ID from Firebase Authentication
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    userId = currentUser?.uid;
 
     if (userId != null) {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
       if (snapshot.exists) {
         setState(() {
           _nameController.text = snapshot['name'] ?? '';
@@ -52,9 +54,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
     }
   }
 
-  // Pick image from gallery
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _profileImagePath = pickedFile.path;
@@ -63,40 +65,40 @@ class _MyProfilePageState extends State<MyProfilePage> {
     }
   }
 
-  // Remove image and reset to default profile image
   void _removeImage() {
     setState(() {
-      _profileImagePath = 'assets/profile.jpeg'; // Reset to default image
-      _profileImageFile = null; // Clear the selected file
+      _profileImagePath = 'assets/profile.jpeg';
+      _profileImageFile = null;
     });
   }
 
-  // Save Profile Data
   Future<void> _saveProfile() async {
-    // Here, you can upload the profile image to Firebase Storage
-    String imageUrl = _profileImagePath; // Default to the current image
+    if (userId == null) return;
+
+    String imageUrl = _profileImagePath;
 
     if (_profileImageFile != null) {
-      // Upload the selected image to Firebase Storage
       imageUrl = await _uploadProfileImage(_profileImageFile!);
     }
 
-    // Save profile data to Firestore
     await FirebaseFirestore.instance.collection('users').doc(userId).set({
       'name': _nameController.text,
       'country': _countryController.text,
       'email': _emailController.text,
       'phone': _phoneController.text,
       'dob': _dobController.text,
-      'profileImage': imageUrl, // Save the image URL or path
+      'profileImage': imageUrl,
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')));
   }
 
-  // Upload profile image to Firebase Storage
   Future<String> _uploadProfileImage(File imageFile) async {
-    final storageRef = FirebaseStorage.instance.ref().child('profile_images').child('$userId.jpg');
+    final storageRef = FirebaseStorage.instance
+        .ref()
+        .child('profile_images')
+        .child('$userId.jpg');
     final uploadTask = storageRef.putFile(imageFile);
     final snapshot = await uploadTask.whenComplete(() {});
     return await snapshot.ref.getDownloadURL();
@@ -111,9 +113,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
         title: const Text(
@@ -132,9 +132,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   radius: 60,
                   backgroundImage: _profileImageFile != null
                       ? FileImage(_profileImageFile!)
-                      : AssetImage(_profileImagePath) as ImageProvider,
+                      : (_profileImagePath.startsWith('http')
+                          ? NetworkImage(_profileImagePath)
+                          : AssetImage(_profileImagePath)) as ImageProvider,
                 ),
                 Positioned(
+                  right: 36,
+                  bottom: 0,
                   child: GestureDetector(
                     onTap: _pickImage,
                     child: CircleAvatar(
@@ -152,7 +156,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     child: CircleAvatar(
                       radius: 18,
                       backgroundColor: Colors.white,
-                      child: const Icon(Icons.delete, size: 18, color: Colors.red),
+                      child: const Icon(Icons.delete,
+                          size: 18, color: Colors.red),
                     ),
                   ),
                 ),
@@ -168,15 +173,22 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
               child: Column(
                 children: [
-                  ProfileTextField(controller: _nameController, label: "User Name"),
+                  ProfileTextField(
+                      controller: _nameController, label: "User Name"),
                   const SizedBox(height: 12),
-                  ProfileTextField(controller: _countryController, label: "Country"),
+                  ProfileTextField(
+                      controller: _countryController, label: "Country"),
                   const SizedBox(height: 12),
-                  ProfileTextField(controller: _emailController, label: "Email Address"),
+                  ProfileTextField(
+                      controller: _emailController,
+                      label: "Email Address",
+                      enabled: false),
                   const SizedBox(height: 12),
-                  ProfileTextField(controller: _phoneController, label: "Mobile Number"),
+                  ProfileTextField(
+                      controller: _phoneController, label: "Mobile Number"),
                   const SizedBox(height: 12),
-                  ProfileTextField(controller: _dobController, label: "Date of Birth"),
+                  ProfileTextField(
+                      controller: _dobController, label: "Date of Birth"),
                 ],
               ),
             ),
@@ -195,7 +207,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             const SizedBox(height: 12),
             OutlinedButton(
               onPressed: () {
-                // Cancel logic
+                Navigator.pop(context);
               },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.black),
@@ -217,11 +229,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
 class ProfileTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final bool enabled;
 
   const ProfileTextField({
     super.key,
     required this.controller,
     required this.label,
+    this.enabled = true,
   });
 
   @override
@@ -235,8 +249,10 @@ class ProfileTextField extends StatelessWidget {
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
+          enabled: enabled,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             fillColor: Colors.white,
             filled: true,
             border: OutlineInputBorder(
@@ -248,5 +264,7 @@ class ProfileTextField extends StatelessWidget {
     );
   }
 }
+
+
 
 

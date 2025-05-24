@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TravelScreen extends StatefulWidget {
+  const TravelScreen({super.key});
+
   @override
   State<TravelScreen> createState() => _TravelScreenState();
 }
@@ -10,13 +12,20 @@ class _TravelScreenState extends State<TravelScreen> {
   final destinationController = TextEditingController();
 
   @override
+  void dispose() {
+    locationController.dispose();
+    destinationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFE6F7F2),
       body: Align(
-        alignment: Alignment.topCenter,   // Align content to top center
+        alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 40, 24, 24), // Add top padding
+          padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,3 +98,4 @@ class _TravelScreenState extends State<TravelScreen> {
     );
   }
 }
+

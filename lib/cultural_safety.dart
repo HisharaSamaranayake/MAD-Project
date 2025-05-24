@@ -47,6 +47,7 @@ class CulturalSafetyPage extends StatelessWidget {
                   ],
                 ),
               );
+            }), // ✅ This line was missing
           ],
         ),
       ),
@@ -62,7 +63,7 @@ class CulturalSafetyPage extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         title: const Text(
-          "Cultural Norms and Safty",
+          "Cultural Norms and Safety",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -115,3 +116,4 @@ class CulturalSafetyPage extends StatelessWidget {
     );
   }
 }
+

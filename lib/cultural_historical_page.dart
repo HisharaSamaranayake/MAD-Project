@@ -175,8 +175,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
     final place = widget.place;
     final weather = widget.weather;
 
-    final extendedDescription = place['description']! +
-        '\n\nThese locations are significant landmarks that showcase the rich cultural and historical heritage of Sri Lanka. Whether you’re exploring ancient ruins or sacred temples, these sites offer a deep insight into the island’s civilization and spirituality. Don’t forget to wear respectful clothing and check visiting hours.';
+    final extendedDescription = '${place['description']!}\n\nThese locations are significant landmarks that showcase the rich cultural and historical heritage of Sri Lanka. Whether you’re exploring ancient ruins or sacred temples, these sites offer a deep insight into the island’s civilization and spirituality. Don’t forget to wear respectful clothing and check visiting hours.';
 
     return Scaffold(
       appBar: AppBar(
