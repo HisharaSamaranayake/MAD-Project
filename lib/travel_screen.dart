@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'vehicle_selection_screen.dart';
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({super.key});
@@ -32,12 +33,11 @@ class _TravelScreenState extends State<TravelScreen> {
             children: [
               Text(
                 'Travel',
-                textAlign: TextAlign.left,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   decoration: TextDecoration.underline,
-                  color: const Color.fromARGB(255, 6, 43, 20),
+                  color: const Color.fromARGB(255, 14, 61, 32),
                 ),
               ),
               const SizedBox(height: 20),
@@ -86,7 +86,12 @@ class _TravelScreenState extends State<TravelScreen> {
                 onPressed: () {
                   if (locationController.text.isNotEmpty &&
                       destinationController.text.isNotEmpty) {
-                    Navigator.pushNamed(context, '/vehicles');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VehicleSelectionScreen(),
+                      ),
+                    );
                   }
                 },
                 child: const Text('Search'),
