@@ -31,7 +31,10 @@ import 'hotel_booking_page.dart';
 import 'yala_map_screen.dart';
 
 // Import the NearbyPlacesScreen
-import 'nearby_places_screen.dart'; // <-- Add this import
+import 'nearby_places_screen.dart';
+
+// ✅ Import the Emergency Notification Screen
+import 'emergency_notifications_screen.dart';
 
 // Background handler for Firebase Messaging
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -80,14 +83,13 @@ class MyApp extends StatelessWidget {
         '/travelnote': (context) => const TravelNotePage(),
         '/cultural_safety': (context) => const CulturalSafetyPage(),
         '/currency_exchange': (context) => const CurrencyExchangePage(),
-
-        // New routes for Travel and Stay
         '/travel': (context) => const TravelScreen(),
         '/stay': (context) => const HotelBookingPage(),
-
-        // Other new routes
         '/yalamap': (context) => const YalaMapScreen(),
-        '/nearbyplaces': (context) => const NearbyPlacesScreen(foodName: ''), // default foodName empty; pass real on navigation
+        '/nearbyplaces': (context) => const NearbyPlacesScreen(foodName: ''),
+
+        // ✅ Added missing emergency notifications route
+        '/emergency_notifications': (context) => const EmergencyNotificationScreen(),
       },
 
       // Handle unknown routes
@@ -97,6 +99,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
 
 
 

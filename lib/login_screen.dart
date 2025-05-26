@@ -1,7 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:ui';
 // import 'package:flutter_facebook_auth/flutter_facebook_auth.dart'; // Facebook login disabled
 import 'welcome_screen.dart';
 
@@ -17,7 +17,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  String _errorMessage = '';
+  String? _errorMessage;
+
+
 
   Future<void> _login() async {
     String email = _emailController.text.trim();
@@ -25,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -279,6 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
 
 
 
