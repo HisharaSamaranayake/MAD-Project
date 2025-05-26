@@ -340,7 +340,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(25),
         border: Border.all(color: Colors.grey),
       );
-}
+} 
+
 
 
 

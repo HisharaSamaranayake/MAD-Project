@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.notifications, color: Colors.black),
               iconSize: 30,
               onPressed: () {
-                Navigator.pushNamed(context, '/emergencyAlerts');
+                Navigator.pushNamed(context, '/emergency_notifications'); 
               },
             ),
           ),
@@ -242,6 +242,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
   }
 }
+
+
+
 
 
 
