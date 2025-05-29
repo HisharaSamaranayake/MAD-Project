@@ -155,9 +155,3 @@ class _TravelScreenState extends State<TravelScreen> {
     {'label': 'Van', 'icon': Icons.directions_bus},
   ];
 }
-
-
-
-
-
-
