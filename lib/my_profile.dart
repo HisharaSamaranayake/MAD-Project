@@ -122,6 +122,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         ),
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 120), // prevent overlap with buttons
         child: Column(
           children: [
             const SizedBox(height: 10),
@@ -193,6 +194,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
             ),
             const SizedBox(height: 24),
+            // Save and Cancel buttons removed from here
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             ElevatedButton(
               onPressed: _saveProfile,
               style: ElevatedButton.styleFrom(
@@ -218,7 +228,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
               child: const Text("Cancel"),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -264,6 +273,7 @@ class ProfileTextField extends StatelessWidget {
     );
   }
 }
+
 
 
 

@@ -19,8 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String? _errorMessage;
 
-
-
   Future<void> _login() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
@@ -194,7 +192,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 content: Text('Password reset is under development.')),
                           );
                         },
-                        child: const Text('Forgot password?'),
+                        child: const Text(
+                          'Forgot password?',
+                          style: TextStyle(
+                            color: Color(0xFF014D4D), // Darker peacock blue-ish color
+                          ),
+                        ),
                       ),
                     ),
 
@@ -281,6 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
 
 
 

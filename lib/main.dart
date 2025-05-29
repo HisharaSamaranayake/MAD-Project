@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
+
+// Theme and Settings
+import 'theme_provider.dart';
 
 // Screens
 import 'Splash_Screen.dart';
@@ -11,7 +15,7 @@ import 'home_screen.dart';
 import 'FoodCategoryScreen.dart';
 import 'Emergency.dart';
 import 'my_profile.dart';
-import 'setting.dart';
+import 'settings_screen.dart';
 import 'coastal_beaches.dart';
 import 'cultural_historical_page.dart';
 import 'hillcountry_scenic_page.dart';
@@ -22,21 +26,15 @@ import 'seasonal_experience_page.dart';
 import 'cultural_safety.dart';
 import 'currency_exchange.dart';
 import 'travel_note.dart';
-
-// New screens for Travel and Stay
 import 'travel_screen.dart';
+import 'confirm_booking_screen.dart';
+import 'route_screen.dart';
 import 'hotel_booking_page.dart';
-
-// Import your new YalaMapScreen file
 import 'yala_map_screen.dart';
-
-// Import the NearbyPlacesScreen
 import 'nearby_places_screen.dart';
-
-// ✅ Import the Emergency Notification Screen
 import 'emergency_notifications_screen.dart';
 
-// Background handler for Firebase Messaging
+// Firebase background handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message: ${message.messageId}');
@@ -48,7 +46,12 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -56,13 +59,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    // Debug print to verify current font family and size
+    // print('Current fontFamily: ${themeProvider.fontFamily}, fontSize: ${themeProvider.fontSize}');
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Wander Lanka',
-      theme: ThemeData(primarySwatch: Colors.teal),
+      locale: themeProvider.locale,
+      themeMode: themeProvider.themeMode,
+      theme: ThemeData.light().copyWith(
+        colorScheme: ThemeData.light().colorScheme.copyWith(
+          primary: Colors.teal,
+        ),
+        textTheme: ThemeData.light().textTheme.apply(
+          fontFamily: themeProvider.fontFamily == 'Default' ? null : themeProvider.fontFamily,
+          fontSizeFactor: themeProvider.fontSize / 16.0,
+        ),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
+        textTheme: ThemeData.dark().textTheme.apply(
+          fontFamily: themeProvider.fontFamily == 'Default' ? null : themeProvider.fontFamily,
+          fontSizeFactor: themeProvider.fontSize / 16.0,
+        ),
+      ),
       initialRoute: '/splash',
-
-      // Static routes
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
@@ -72,7 +94,7 @@ class MyApp extends StatelessWidget {
         '/food': (context) => const FoodCategoryScreen(),
         '/profile': (context) => const MyProfilePage(),
         '/emergency': (context) => const EmergencyScreen(),
-        '/setting': (context) => const SettingsPage(),
+        '/setting': (context) => const SettingsScreen(),
         '/beach': (context) => const CoastalBeachesPage(),
         '/culture': (context) => const CulturalHistoricalPage(),
         '/hillcountry': (context) => const HillCountryScenicPage(),
@@ -83,22 +105,57 @@ class MyApp extends StatelessWidget {
         '/travelnote': (context) => const TravelNotePage(),
         '/cultural_safety': (context) => const CulturalSafetyPage(),
         '/currency_exchange': (context) => const CurrencyExchangePage(),
-        '/travel': (context) => const TravelScreen(),
+        '/travel': (context) => TravelScreen(),
         '/stay': (context) => const HotelBookingPage(),
         '/yalamap': (context) => const YalaMapScreen(),
-        '/nearbyplaces': (context) => const NearbyPlacesScreen(foodName: ''),
-
-        // ✅ Added missing emergency notifications route
         '/emergency_notifications': (context) => const EmergencyNotificationScreen(),
       },
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/confirm_booking':
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (context) => ConfirmBookingScreen(
+                pickup: args['pickup'],
+                destination: args['destination'],
+                vehicleType: args['vehicleType'],
+              ),
+            );
 
-      // Handle unknown routes
+          case '/route':
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (context) => RouteScreen(
+                pickup: args['pickup'],
+                destination: args['destination'],
+                vehicleNo: args['vehicleNo'],
+                driverPhone: args['driverPhone'],
+              ),
+            );
+
+          case '/nearbyplaces':
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (context) => NearbyPlacesScreen(
+                foodName: args['foodName'],
+              ),
+            );
+
+          default:
+            return null;
+        }
+      },
       onUnknownRoute: (settings) => MaterialPageRoute(
         builder: (_) => const SplashScreen(),
       ),
     );
   }
 }
+
+
+
+
+
 
 
 

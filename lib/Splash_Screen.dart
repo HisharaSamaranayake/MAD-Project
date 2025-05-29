@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
+  static const Color darkPeacock = Color(0xFF014D4D); // Dark peacock blue
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,14 +14,14 @@ class SplashScreen extends StatelessWidget {
         children: [
           // Apply BackdropFilter for blurring the background image
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 200.0, sigmaY: 100.0), // Adjust blur strength
+            filter: ImageFilter.blur(sigmaX: 200.0, sigmaY: 100.0),
             child: Opacity(
-              opacity: 0.7, // Adjust opacity for the image
+              opacity: 0.7,
               child: Image.asset(
                 "assets/splashscreen.png",
                 fit: BoxFit.cover,
-                width: double.infinity, // Makes sure the image covers the full width
-                height: double.infinity, // Makes sure the image covers the full height
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
           ),
@@ -28,23 +30,32 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset("assets/logo.png", height: 300),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+
+              // Register Button
               ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 60), // width, height
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding to adjust button size
+                  minimumSize: const Size(200, 60),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  foregroundColor: darkPeacock, // Text color
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Bigger font
                 ),
-                child: Text("Register"),
+                child: const Text("Register"),
               ),
-              SizedBox(height: 20),
+
+              const SizedBox(height: 20),
+
+              // Login Button
               ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context, '/login'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 60), // width, height
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding to adjust button size
+                  minimumSize: const Size(200, 60),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  foregroundColor: darkPeacock, // Text color
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Bigger font
                 ),
-                child: Text("Log In"),
+                child: const Text("Log In"),
               ),
             ],
           ),
@@ -53,4 +64,6 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
+
+
 

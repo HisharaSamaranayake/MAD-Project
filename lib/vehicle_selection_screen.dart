@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ride_confirmation_screen.dart'; // import this
 
 class VehicleSelectionScreen extends StatelessWidget {
   final List<Map<String, dynamic>> vehicles = [
@@ -56,10 +57,12 @@ class VehicleSelectionScreen extends StatelessWidget {
                 style: const TextStyle(color: Colors.black54),
               ),
               onTap: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  '/confirm',
-                  arguments: vehicle['name'],
+                  MaterialPageRoute(
+                    builder: (context) => const RideConfirmationScreen(),
+                    settings: RouteSettings(arguments: vehicle['name']),
+                  ),
                 );
               },
             ),

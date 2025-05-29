@@ -129,7 +129,7 @@ class _SeasonalExperienceScreenState extends State<SeasonalExperienceScreen> {
         'event': 'Duruthu Perahera – Kelaniya',
         'image': 'assets/duruthu_perahera.jpg',
         'description':
-            'A grand religious procession marking Lord Buddha’s first visit to Sri Lanka.',
+            'Duruthu Perahera is a grand Buddhist procession held every January in Kelaniya, near Colombo, to commemorate the first visit of the Buddha to Sri Lanka over 2,500 years ago. It marks the beginning of the Buddhist calendar year. The perahera is organized by the Kelaniya Raja Maha Viharaya, a sacred temple believed to be blessed by the Buddha himself. The event features a majestic parade with traditional dancers, drummers, whip-crackers, flag bearers, and beautifully adorned elephants. Devotees and tourists alike gather to witness this colorful and spiritual spectacle. Duruthu Perahera reflects the rich cultural and religious heritage of Sri Lanka, promoting peace and devotion.',
         'latitude': 7.0106,
         'longitude': 79.9761,
       },
