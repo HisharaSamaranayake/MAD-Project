@@ -1,106 +1,157 @@
 import 'package:flutter/material.dart';
-import 'vehicle_selection_screen.dart';
+import 'confirm_booking_screen.dart';
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({super.key});
 
   @override
-  State<TravelScreen> createState() => _TravelScreenState();
+  _TravelScreenState createState() => _TravelScreenState();
 }
 
 class _TravelScreenState extends State<TravelScreen> {
-  final locationController = TextEditingController();
+  final pickupController = TextEditingController();
   final destinationController = TextEditingController();
+  String selectedVehicle = 'Tuk';
 
-  @override
-  void dispose() {
-    locationController.dispose();
-    destinationController.dispose();
-    super.dispose();
-  }
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE6F7F2),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Travel',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  decoration: TextDecoration.underline,
-                  color: const Color.fromARGB(255, 14, 61, 32),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Column(
+      backgroundColor: Colors.white, // Full white background
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              color: const Color(0xFFB2DFDB), // Light mint green top bar
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              alignment: Alignment.centerLeft,
+              child: Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFCCF3D6),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextField(
-                      controller: locationController,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.place, color: Color(0xFF317873)),
-                        hintText: 'Your location',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      ),
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  const SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFCCF3D6),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextField(
-                      controller: destinationController,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.place, color: Color(0xFF317873)),
-                        hintText: 'Where are you going?',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      ),
-                    ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    "Travel",
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFD8ECF2),
-                  foregroundColor: Colors.grey,
-                  minimumSize: const Size(double.infinity, 48),
-                ),
-                onPressed: () {
-                  if (locationController.text.isNotEmpty &&
-                      destinationController.text.isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => VehicleSelectionScreen(),
+            ),
+
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    _buildInputField("Your location", pickupController),
+                    const SizedBox(height: 16),
+                    _buildInputField("Where are you going?", destinationController),
+                    const SizedBox(height: 24),
+
+                    const Text("Select Vehicle:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const SizedBox(height: 10),
+
+                    Row(
+                      children: _vehicleTypes.map((vehicle) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: ChoiceChip(
+                            label: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(vehicle['icon'], size: 18, color: Colors.black),
+                                const SizedBox(width: 4),
+                                Text(vehicle['label']),
+                              ],
+                            ),
+                            selected: selectedVehicle == vehicle['label'],
+                            selectedColor: const Color(0xFFB2DFDB),
+                            backgroundColor: Colors.grey[200],
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                            onSelected: (selected) {
+                              setState(() {
+                                selectedVehicle = vehicle['label'];
+                              });
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
+                    const Spacer(),
+
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (pickupController.text.isNotEmpty && destinationController.text.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ConfirmBookingScreen(
+                                  pickup: pickupController.text,
+                                  destination: destinationController.text,
+                                  vehicleType: selectedVehicle,
+                                ),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Please fill in both fields")),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF00796B), // Teal
+                          padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        ),
+                        child: const Text("Search", style: TextStyle(fontSize: 16, color: Colors.white)),
                       ),
-                    );
-                  }
-                },
-                child: const Text('Search'),
+                    )
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          // Add navigation if needed
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
+        ],
       ),
     );
   }
-}
 
+  Widget _buildInputField(String label, TextEditingController controller) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        fillColor: Colors.grey[100],
+        filled: true,
+        border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
+      ),
+    );
+  }
+
+  final List<Map<String, dynamic>> _vehicleTypes = [
+    {'label': 'Tuk', 'icon': Icons.two_wheeler},
+    {'label': 'Car', 'icon': Icons.directions_car},
+    {'label': 'Van', 'icon': Icons.directions_bus},
+  ];
+}

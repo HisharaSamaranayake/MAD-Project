@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:ui';
-// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart'; // Facebook login disabled
 import 'welcome_screen.dart';
+import 'forgot_password_screen.dart'; 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,8 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? _errorMessage;
-
-
 
   Future<void> _login() async {
     String email = _emailController.text.trim();
@@ -48,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _loginWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return; // user cancelled
+      if (googleUser == null) return;
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
@@ -71,41 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // Facebook login is currently disabled
-  // Future<void> _loginWithFacebook() async {
-  //   try {
-  //     final LoginResult result = await FacebookAuth.instance.login();
-
-  //     if (result.status == LoginStatus.success) {
-  //       final OAuthCredential facebookAuthCredential =
-  //           FacebookAuthProvider.credential(result.accessToken!.token);
-
-  //       await _auth.signInWithCredential(facebookAuthCredential);
-  //       await _auth.currentUser?.reload();
-
-  //       Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-  //         (Route<dynamic> route) => false,
-  //       );
-  //     } else if (result.status == LoginStatus.cancelled) {
-  //       // user cancelled login, do nothing
-  //     } else {
-  //       _showError('Facebook login failed: ${result.message}');
-  //     }
-  //   } catch (e) {
-  //     _showError("Facebook login failed");
-  //   }
-  // }
-
   void _loginWith(String provider) {
     switch (provider) {
       case 'google':
         _loginWithGoogle();
         break;
-      // case 'facebook':
-      //   _loginWithFacebook();
-      //   break;
       case 'apple':
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Apple sign-in is not available yet')),
@@ -189,12 +157,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Password reset is under development.')),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
                           );
                         },
-                        child: const Text('Forgot password?'),
+                        child: const Text(
+                          'Forgot password?',
+                          style: TextStyle(
+                            color: Color(0xFF014D4D),
+                          ),
+                        ),
                       ),
                     ),
 
@@ -281,6 +254,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
 
 
 
